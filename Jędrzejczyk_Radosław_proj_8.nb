@@ -1,0 +1,620 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     28358,        612]
+NotebookOptionsPosition[     27754,        593]
+NotebookOutlinePosition[     28179,        610]
+CellTagsIndexPosition[     28136,        607]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.943974887907878*^9, 3.943974891459649*^9}, 
+   3.943974982464511*^9, {3.943975052522132*^9, 3.943975063138*^9}, 
+   3.943975778855007*^9},ExpressionUUID->"f56e3274-1c81-450a-8b34-\
+dc7c86bea1db"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"DynamicModule", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"userFunction", "=", 
+       RowBox[{"Piecewise", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"x", ",", 
+            RowBox[{"0", "<", "x", "<=", 
+             RowBox[{"1", "/", "2"}]}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"1", "-", "x"}], ",", 
+            RowBox[{
+             RowBox[{"1", "/", "2"}], "<", "x", "<=", "1"}]}], "}"}]}], "}"}],
+         "]"}]}], ",", "initialTemperature", ",", 
+      RowBox[{"aCoordinate", "=", "0"}], ",", 
+      RowBox[{"bCoordinate", "=", "1"}], ",", 
+      RowBox[{"aTemperature", "=", "1"}], ",", 
+      RowBox[{"bTemperature", "=", "2"}], ",", 
+      RowBox[{"kCoefficient", "=", "1"}], ",", 
+      RowBox[{"tEnd", "=", "5"}], ",", "maxTemp", ",", "minTemp"}], "}"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"initialTemperature", "[", "x_", "]"}], " ", "=", 
+      "userFunction"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"minimal", " ", "temperature"}], "*)"}], "\[IndentingNewLine]", 
+     
+     RowBox[{"minTemp", "=", 
+      RowBox[{"Min", "[", 
+       RowBox[{"aTemperature", ",", "bTemperature", ",", 
+        RowBox[{"NMinValue", "[", 
+         RowBox[{
+          RowBox[{"initialTemperature", "[", "x", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"x", ",", "aCoordinate", ",", "bCoordinate"}], "}"}]}], 
+         "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"maximal", " ", "temperature"}], "*)"}], "\[IndentingNewLine]", 
+     
+     RowBox[{"maxTemp", "=", 
+      RowBox[{"Max", "[", 
+       RowBox[{"aTemperature", ",", "bTemperature", ",", 
+        RowBox[{"NMaxValue", "[", 
+         RowBox[{
+          RowBox[{"initialTemperature", "[", "x", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"x", ",", "aCoordinate", ",", "bCoordinate"}], "}"}]}], 
+         "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Column", "[", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Style", "[", 
+         RowBox[{
+         "\"\<Function of initial temperature\>\"", ",", "12", ",", "Bold"}], 
+         "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Row", "[", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"InputField", "[", 
+            RowBox[{
+             RowBox[{"Dynamic", "[", "userFunction", "]"}], ",", 
+             RowBox[{"FieldSize", "->", 
+              RowBox[{"{", 
+               RowBox[{"20", ",", "4"}], "}"}]}]}], "]"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Button", "[", 
+            RowBox[{"\"\<Apply\>\"", ",", 
+             RowBox[{"Dynamic", "[", 
+              RowBox[{
+               RowBox[{"initialTemperature", "[", "x_", "]"}], "=", 
+               "userFunction"}], "]"}]}], "]"}]}], "\[IndentingNewLine]", 
+          "}"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Row", "[", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", 
+               RowBox[{"\"\<a\>\"", ",", "13", ",", "Bold"}], "]"}], ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "aCoordinate", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"5", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", 
+               RowBox[{"\"\<b\>\"", ",", "13", ",", "Bold"}], "]"}], ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "bCoordinate", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"5", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", 
+               RowBox[{"\"\<u[a,0]\>\"", ",", "13", ",", "Bold"}], "]"}], ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "aTemperature", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"5", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", 
+               RowBox[{"\"\<u[b,0]\>\"", ",", "13", ",", "Bold"}], "]"}], ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "bTemperature", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"5", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", 
+               RowBox[{"\"\<k\>\"", ",", "13", ",", "Bold"}], "]"}], ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "kCoefficient", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"5", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", 
+               RowBox[{"\"\<end time\>\"", ",", "13", ",", "Bold"}], "]"}], 
+              ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "tEnd", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"5", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}]}],
+           "\[IndentingNewLine]", "}"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Button", "[", 
+         RowBox[{"\"\<Evaluate\>\"", ",", 
+          RowBox[{
+           RowBox[{"solution", "=", 
+            RowBox[{"NDSolve", "[", 
+             RowBox[{
+              RowBox[{"{", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"D", "[", 
+                  RowBox[{
+                   RowBox[{"u", "[", 
+                    RowBox[{"x", ",", "t"}], "]"}], ",", "t"}], "]"}], "==", 
+                 RowBox[{"kCoefficient", " ", 
+                  RowBox[{"D", "[", 
+                   RowBox[{
+                    RowBox[{"u", "[", 
+                    RowBox[{"x", ",", "t"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"x", ",", "2"}], "}"}]}], "]"}]}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"u", "[", 
+                  RowBox[{"aCoordinate", ",", "t"}], "]"}], "==", 
+                 "aTemperature"}], ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"u", "[", 
+                  RowBox[{"bCoordinate", ",", "t"}], "]"}], "==", 
+                 "bTemperature"}], ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"u", "[", 
+                  RowBox[{"x", ",", "0"}], "]"}], "==", 
+                 RowBox[{"Piecewise", "[", 
+                  RowBox[{"{", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"initialTemperature", "[", "x", "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"x", "!=", "aCoordinate"}], "&&", 
+                    RowBox[{"x", "!=", "bCoordinate"}]}]}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"aTemperature", ",", 
+                    RowBox[{"x", "==", "aCoordinate"}]}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"bTemperature", ",", 
+                    RowBox[{"x", "==", "bCoordinate"}]}], "}"}]}], 
+                   "\[IndentingNewLine]", "}"}], "]"}]}]}], "}"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"u", "[", 
+               RowBox[{"x", ",", "t"}], "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"x", ",", "aCoordinate", ",", "bCoordinate"}], "}"}], 
+              ",", 
+              RowBox[{"{", 
+               RowBox[{"t", ",", "0", ",", "tEnd"}], "}"}]}], 
+             "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+            "Extract", " ", "and", " ", "assign", " ", "solution", " ", "to", 
+             " ", "a", " ", "callable", " ", "function"}], "*)"}], 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"uFunction", "[", 
+             RowBox[{"x_", ",", "t_"}], "]"}], "=", 
+            RowBox[{
+             RowBox[{"u", "[", 
+              RowBox[{"x", ",", "t"}], "]"}], "/.", " ", 
+             RowBox[{"First", "[", "solution", "]"}]}]}], ";"}]}], "]"}], ",",
+         "\[IndentingNewLine]", 
+        RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{"Solve", " ", "the", " ", "heat", " ", "equation", " ", 
+           RowBox[{"(", 
+            RowBox[{"numericaly", " ", "so", " ", 
+             RowBox[{"it", "'"}], "s", " ", "less", " ", "computation", " ", 
+             "heavy"}], ")"}]}], "*)"}], "\[IndentingNewLine]", 
+         RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Column", "[", 
+            RowBox[{"{", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Row", "[", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{"Plot", "[", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"uFunction", "[", 
+                   RowBox[{"x", ",", "tCurrent"}], "]"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"x", ",", "aCoordinate", ",", "bCoordinate"}], 
+                   "}"}], ",", 
+                  RowBox[{"PlotRange", "->", 
+                   RowBox[{"{", 
+                    RowBox[{"minTemp", ",", "maxTemp"}], "}"}]}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"AxesLabel", "->", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<X\>\"", ",", "Bold"}], "]"}], ",", 
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<Temperature\>\"", ",", "Bold"}], "]"}]}], 
+                    "}"}]}], ",", 
+                  RowBox[{"ColorFunctionScaling", "->", "False"}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"ColorFunction", "->", 
+                   RowBox[{"ColorData", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"\"\<ThermometerColors\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"minTemp", ",", "maxTemp"}], "}"}]}], "}"}], 
+                    "]"}]}], ",", 
+                  RowBox[{"PlotLabel", "->", 
+                   RowBox[{"Style", "[", 
+                    RowBox[{"\"\<Temperature as a plot\>\"", ",", "Bold"}], 
+                    "]"}]}], ",", 
+                  RowBox[{"ImageSize", "->", "Medium"}]}], 
+                 "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", "}"}], 
+               "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Row", "[", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"DensityPlot", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"uFunction", "[", 
+                    RowBox[{"x", ",", "t"}], "]"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{"x", ",", "aCoordinate", ",", "bCoordinate"}], 
+                    "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{"t", ",", 
+                    RowBox[{"tCurrent", "-", "0.00000001"}], ",", 
+                    "tCurrent"}], "}"}], ",", "\[IndentingNewLine]", 
+                   RowBox[{"ColorFunctionScaling", "->", "False"}], ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"ColorFunction", "->", 
+                    RowBox[{"ColorData", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"\"\<ThermometerColors\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"minTemp", ",", "maxTemp"}], "}"}]}], "}"}], 
+                    "]"}]}], ",", "\[IndentingNewLine]", 
+                   RowBox[{"Axes", "->", 
+                    RowBox[{"{", 
+                    RowBox[{"True", ",", "False"}], "}"}]}], ",", 
+                   RowBox[{"Frame", "->", "False"}], ",", 
+                   RowBox[{"PlotLabel", "->", 
+                    RowBox[{"Style", "[", 
+                    RowBox[{
+                    "\"\<Temperature as a gradient\>\"", ",", "Bold"}], 
+                    "]"}]}], ",", "\[IndentingNewLine]", 
+                   RowBox[{"AxesLabel", "->", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<X\>\"", ",", "Bold"}], "]"}], ",", 
+                    "\"\<\>\""}], "}"}]}], ",", 
+                   RowBox[{"ImageSize", "->", "Medium"}]}], "]"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"BarLegend", "[", 
+                  RowBox[{"{", 
+                   RowBox[{"\"\<TemperatureMap\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"minTemp", ",", "maxTemp"}], "}"}]}], "}"}], 
+                  "]"}]}], "\[IndentingNewLine]", "}"}], "]"}]}], 
+             "\[IndentingNewLine]", "}"}], "]"}], ",", 
+           RowBox[{"Style", "[", 
+            RowBox[{
+            "\"\<Timestep of simulation\>\"", ",", "10", ",", "Bold"}], "]"}],
+            ",", 
+           RowBox[{"{", 
+            RowBox[{"tCurrent", ",", "0.0001", ",", "tEnd"}], "}"}]}], "]"}], 
+         "]"}]}], "\[IndentingNewLine]", "}"}], "]"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.943964259058575*^9, 3.943964276387354*^9}, {
+   3.943964351769363*^9, 3.9439643639149737`*^9}, {3.943964458660882*^9, 
+   3.943964472612513*^9}, {3.943964506768102*^9, 3.943964532206284*^9}, {
+   3.943964606442519*^9, 3.943964916894597*^9}, {3.943964952237988*^9, 
+   3.943965024271262*^9}, {3.943965062384169*^9, 3.94396507967031*^9}, {
+   3.943965123583353*^9, 3.943965134611083*^9}, {3.943965580805759*^9, 
+   3.9439656681427298`*^9}, {3.943966145816938*^9, 3.943966146233542*^9}, 
+   3.9439661853086967`*^9, {3.943966242114081*^9, 3.94396625499951*^9}, {
+   3.94396628958197*^9, 3.943966332168303*^9}, {3.943966390701835*^9, 
+   3.943966393626565*^9}, {3.943966450358626*^9, 3.943966455443713*^9}, {
+   3.943966515464054*^9, 3.9439665359308863`*^9}, {3.943966576878886*^9, 
+   3.943966579906864*^9}, {3.943966631246655*^9, 3.943966636023769*^9}, {
+   3.943966670291299*^9, 3.94396669889592*^9}, {3.943966862809426*^9, 
+   3.943967037869473*^9}, {3.943967175929731*^9, 3.943967216119114*^9}, {
+   3.943967254141429*^9, 3.943967386572696*^9}, {3.943967454864913*^9, 
+   3.943967466276965*^9}, 3.943967619992003*^9, 3.943967653052007*^9, 
+   3.943967733447565*^9, {3.943967935754959*^9, 3.943967984236604*^9}, {
+   3.9439680360838337`*^9, 3.94396805494209*^9}, 3.943968211826783*^9, {
+   3.943968299592563*^9, 3.9439683202180557`*^9}, {3.943968395423571*^9, 
+   3.943968401757293*^9}, {3.943968460067457*^9, 3.943968466562162*^9}, {
+   3.9439685749947166`*^9, 3.943968584496717*^9}, {3.943968786744381*^9, 
+   3.943968806308633*^9}, {3.943968845712189*^9, 3.943968877700168*^9}, {
+   3.943968918887931*^9, 3.943968959429686*^9}, {3.943969053405416*^9, 
+   3.943969076039198*^9}, {3.943969154520774*^9, 3.943969191506065*^9}, {
+   3.943969271020361*^9, 3.943969282854691*^9}, {3.943969334350094*^9, 
+   3.943969426682027*^9}, {3.943969463631853*^9, 3.943969558840162*^9}, {
+   3.943969611262352*^9, 3.943969634920862*^9}, {3.94396971382907*^9, 
+   3.943969739993361*^9}, {3.943969901095434*^9, 3.943970056503002*^9}, {
+   3.943970131529855*^9, 3.943970164721197*^9}, {3.9439702718580317`*^9, 
+   3.943970497023761*^9}, {3.943970534601103*^9, 3.943970624754819*^9}, {
+   3.943972266013871*^9, 3.943972293087492*^9}, {3.943972331222933*^9, 
+   3.943972496953554*^9}, {3.9439725276744146`*^9, 3.94397260868516*^9}, {
+   3.943972639887341*^9, 3.943972811707813*^9}, {3.943972992111071*^9, 
+   3.943973064640381*^9}, 3.943973138381258*^9, {3.9439731695605793`*^9, 
+   3.9439732974931393`*^9}, {3.943973373014372*^9, 3.943973374443364*^9}, {
+   3.943973486755591*^9, 3.9439735127894278`*^9}, {3.9439735880484858`*^9, 
+   3.943973592060102*^9}, {3.9439736417685013`*^9, 3.943973724820265*^9}, {
+   3.943973786049305*^9, 3.943973857188574*^9}, {3.943973945657289*^9, 
+   3.943974053960256*^9}, {3.943974186615563*^9, 3.94397427456645*^9}, {
+   3.943974338170341*^9, 3.943974391598967*^9}, {3.943974427007711*^9, 
+   3.94397447049328*^9}, {3.943974539489484*^9, 3.943974568075123*^9}, {
+   3.943974605203453*^9, 3.94397470683724*^9}, {3.9439748736715117`*^9, 
+   3.943974907522275*^9}, {3.9439751387726994`*^9, 3.943975163827107*^9}, {
+   3.94397519693534*^9, 3.943975276360382*^9}, {3.9439754723451853`*^9, 
+   3.943975498402151*^9}, {3.9439755926906652`*^9, 3.943975658246476*^9}, {
+   3.943975718771428*^9, 3.943975780989212*^9}, {3.9439759781035213`*^9, 
+   3.943976030423895*^9}, 3.94397608668038*^9, {3.943976173234187*^9, 
+   3.943976175708816*^9}, {3.943976283055339*^9, 3.943976289021535*^9}, {
+   3.943976355102409*^9, 3.9439763554114733`*^9}, {3.943976454081444*^9, 
+   3.943976489260236*^9}, {3.9439772580656557`*^9, 3.943977263007469*^9}, {
+   3.9439773406882544`*^9, 3.943977342817202*^9}, {3.943977401036807*^9, 
+   3.943977454967552*^9}, 3.943977536721681*^9, 3.943977767265889*^9, {
+   3.9439778803088303`*^9, 3.943977909199257*^9}, {3.9439780156775*^9, 
+   3.9439780998656807`*^9}, {3.943978138958131*^9, 3.9439781730003557`*^9}, {
+   3.943978203357684*^9, 3.943978242155376*^9}, {3.9439783356595583`*^9, 
+   3.943978593818956*^9}, {3.9439788207150583`*^9, 3.943978972736457*^9}, {
+   3.9439790098902607`*^9, 3.943979078419094*^9}},
+ CellLabel->"In[31]:=",ExpressionUUID->"394507e6-2918-4ffc-98c4-16eec6de2f34"],
+
+Cell[BoxData[
+ DynamicModuleBox[{$CellContext`userFunction$$ = Piecewise[{{$CellContext`x, 
+     Inequality[0, Less, $CellContext`x, LessEqual, 
+      Rational[1, 2]]}, {1 - $CellContext`x, 
+     Inequality[
+      Rational[1, 2], Less, $CellContext`x, LessEqual, 1]}}, 
+   0], $CellContext`initialTemperature$$, $CellContext`aCoordinate$$ = 
+  0, $CellContext`bCoordinate$$ = 1, $CellContext`aTemperature$$ = 
+  1, $CellContext`bTemperature$$ = 2, $CellContext`kCoefficient$$ = 
+  1, $CellContext`tEnd$$ = 5, $CellContext`maxTemp$$ = 
+  2, $CellContext`minTemp$$ = 0.}, 
+  TagBox[GridBox[{
+     {
+      StyleBox["\<\"Function of initial temperature\"\>",
+       StripOnInput->False,
+       FontSize->12,
+       FontWeight->Bold]},
+     {
+      TemplateBox[{
+        InputFieldBox[
+         Dynamic[$CellContext`userFunction$$], FieldSize -> {20, 4}], 
+        ButtonBox[
+        "\"Apply\"", ButtonFunction :> 
+         Dynamic[$CellContext`initialTemperature$$[
+             Pattern[$CellContext`x$, 
+              Blank[]]] = $CellContext`userFunction$$], Appearance -> 
+         Automatic, Evaluator -> Automatic, Method -> "Preemptive"]},
+       "RowDefault"]},
+     {
+      TemplateBox[{
+        TagBox[
+         GridBox[{{
+            StyleBox["\"a\"", 13, Bold, StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`aCoordinate$$], FieldSize -> {5, 1}]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+        TagBox[
+         GridBox[{{
+            StyleBox["\"b\"", 13, Bold, StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`bCoordinate$$], FieldSize -> {5, 1}]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+        TagBox[
+         GridBox[{{
+            StyleBox["\"u[a,0]\"", 13, Bold, StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`aTemperature$$], FieldSize -> {5, 1}]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+        TagBox[
+         GridBox[{{
+            StyleBox["\"u[b,0]\"", 13, Bold, StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`bTemperature$$], FieldSize -> {5, 1}]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+        TagBox[
+         GridBox[{{
+            StyleBox["\"k\"", 13, Bold, StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`kCoefficient$$], FieldSize -> {5, 1}]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+        TagBox[
+         GridBox[{{
+            StyleBox["\"end time\"", 13, Bold, StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`tEnd$$], FieldSize -> {5, 1}]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"]},
+       "RowDefault"]},
+     {
+      ButtonBox["\<\"Evaluate\"\>",
+       Appearance->Automatic,
+       ButtonFunction:>($CellContext`solution = NDSolve[{D[
+              $CellContext`u[$CellContext`x, $CellContext`t], $CellContext`t] == \
+$CellContext`kCoefficient$$ D[
+               $CellContext`u[$CellContext`x, $CellContext`t], \
+{$CellContext`x, 
+                2}], $CellContext`u[$CellContext`aCoordinate$$, \
+$CellContext`t] == $CellContext`aTemperature$$, \
+$CellContext`u[$CellContext`bCoordinate$$, $CellContext`t] == \
+$CellContext`bTemperature$$, $CellContext`u[$CellContext`x, 0] == 
+            Piecewise[{{
+                $CellContext`initialTemperature$$[$CellContext`x], 
+                
+                And[$CellContext`x != $CellContext`aCoordinate$$, \
+$CellContext`x != $CellContext`bCoordinate$$]}, {$CellContext`aTemperature$$, \
+$CellContext`x == $CellContext`aCoordinate$$}, {$CellContext`bTemperature$$, \
+$CellContext`x == $CellContext`bCoordinate$$}}]}, 
+           $CellContext`u[$CellContext`x, $CellContext`t], {$CellContext`x, \
+$CellContext`aCoordinate$$, $CellContext`bCoordinate$$}, {$CellContext`t, 
+            0, $CellContext`tEnd$$}]; $CellContext`uFunction[
+           Pattern[$CellContext`x, 
+            Blank[]], 
+           Pattern[$CellContext`t, 
+            Blank[]]] = ReplaceAll[
+           $CellContext`u[$CellContext`x, $CellContext`t], 
+           First[$CellContext`solution]]; Null),
+       Evaluator->Automatic,
+       Method->"Preemptive"]},
+     {
+      DynamicBox[ToBoxes[
+        Manipulate[
+         Column[{
+           Row[{
+             Plot[
+              $CellContext`uFunction[$CellContext`x, $CellContext`tCurrent], \
+{$CellContext`x, $CellContext`aCoordinate$$, $CellContext`bCoordinate$$}, 
+              PlotRange -> {$CellContext`minTemp$$, $CellContext`maxTemp$$}, 
+              AxesLabel -> {
+                Style["X", Bold], 
+                Style["Temperature", Bold]}, ColorFunctionScaling -> False, 
+              ColorFunction -> 
+              ColorData[{
+                "ThermometerColors", {$CellContext`minTemp$$, \
+$CellContext`maxTemp$$}}], PlotLabel -> Style["Temperature as a plot", Bold], 
+              ImageSize -> Medium]}], 
+           Row[{
+             DensityPlot[
+              $CellContext`uFunction[$CellContext`x, $CellContext`t], \
+{$CellContext`x, $CellContext`aCoordinate$$, $CellContext`bCoordinate$$}, \
+{$CellContext`t, $CellContext`tCurrent - 1.*^-8, $CellContext`tCurrent}, 
+              ColorFunctionScaling -> False, ColorFunction -> 
+              ColorData[{
+                "ThermometerColors", {$CellContext`minTemp$$, \
+$CellContext`maxTemp$$}}], Axes -> {True, False}, Frame -> False, PlotLabel -> 
+              Style["Temperature as a gradient", Bold], AxesLabel -> {
+                Style["X", Bold], ""}, ImageSize -> Medium], 
+             
+             BarLegend[{
+              "TemperatureMap", {$CellContext`minTemp$$, \
+$CellContext`maxTemp$$}}]}]}], 
+         Style[
+         "Timestep of simulation", 10, Bold], {$CellContext`tCurrent, 
+          0.0001, $CellContext`tEnd$$}], StandardForm],
+       ImageSizeCache->{496., {235.01953125, 238.98046875}}]}
+    },
+    DefaultBaseStyle->"Column",
+    GridBoxAlignment->{"Columns" -> {{Left}}},
+    GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+   "Column"],
+  DynamicModuleValues:>{{
+    DownValues[$CellContext`initialTemperature$$] = {HoldPattern[
+         $CellContext`initialTemperature$$[
+          Pattern[$CellContext`x$, 
+           Blank[]]]] :> Piecewise[{{$CellContext`x, 
+           Inequality[0, Less, $CellContext`x, LessEqual, 
+            Rational[1, 2]]}, {1 - $CellContext`x, 
+           Inequality[
+            Rational[1, 2], Less, $CellContext`x, LessEqual, 1]}}, 
+         0]}}}]], "Output",
+ CellChangeTimes->{
+  3.9439777865460176`*^9, 3.943977916549868*^9, 3.943978017266611*^9, {
+   3.9439780495532293`*^9, 3.9439781159211206`*^9}, {3.943978154627442*^9, 
+   3.943978177595418*^9}, {3.943978323306025*^9, 3.943978342549367*^9}, {
+   3.943978377425543*^9, 3.94397842414715*^9}, 3.943978499655547*^9, {
+   3.9439785454412413`*^9, 3.9439785950326633`*^9}, {3.943978838318758*^9, 
+   3.943978846441723*^9}, 3.943978897253407*^9, 3.9439789308985243`*^9, 
+   3.9439789740245647`*^9, 3.943979085957589*^9},
+ CellLabel->"Out[31]=",ExpressionUUID->"20aba343-db13-4780-aa1e-5f2b8d977307"]
+}, Open  ]]
+},
+WindowSize->{1147.5, 627},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification:>0.7 Inherited,
+FrontEndVersion->"14.0 for Linux x86 (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"1d790498-5911-47b7-afb0-8b3e50788461"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 244, 4, 21, "Input",ExpressionUUID->"f56e3274-1c81-450a-8b34-dc7c86bea1db"],
+Cell[CellGroupData[{
+Cell[827, 28, 18824, 386, 1282, "Input",ExpressionUUID->"394507e6-2918-4ffc-98c4-16eec6de2f34"],
+Cell[19654, 416, 8084, 174, 646, "Output",ExpressionUUID->"20aba343-db13-4780-aa1e-5f2b8d977307"]
+}, Open  ]]
+}
+]
+*)
+

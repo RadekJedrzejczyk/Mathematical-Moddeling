@@ -1,0 +1,221 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8891,        213]
+NotebookOptionsPosition[      8510,        198]
+NotebookOutlinePosition[      8936,        215]
+CellTagsIndexPosition[      8893,        212]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"DynamicModule", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{
+      "directory", "=", 
+       "\"\</home/radek/Desktop/z_uczelni/INF_MS_5/Mathematical modeling and \
+simulation\>\""}], ",", 
+      RowBox[{"img1Path", "=", "\"\<me.jpg\>\""}], ",", 
+      RowBox[{"img2Path", "=", "\"\<hands.jpg\>\""}], ",", "img2Resized", ",",
+       "img1", ",", "img2", ",", "img1Data", ",", "img2Data"}], "}"}], ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"Column", "[", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Style", "[", 
+        RowBox[{"\"\<Directory path\>\"", ",", "12", ",", "Bold"}], "]"}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"InputField", "[", 
+        RowBox[{
+         RowBox[{"Dynamic", "[", "directory", "]"}], ",", 
+         RowBox[{"FieldSize", "->", 
+          RowBox[{"{", 
+           RowBox[{"20", ",", "4"}], "}"}]}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Style", "[", 
+        RowBox[{"\"\<Image 1 name\>\"", ",", "12", ",", "Bold"}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"InputField", "[", 
+        RowBox[{
+         RowBox[{"Dynamic", "[", "img1Path", "]"}], ",", 
+         RowBox[{"FieldSize", "->", 
+          RowBox[{"{", 
+           RowBox[{"15", ",", "1"}], "}"}]}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Style", "[", 
+        RowBox[{"\"\<Image 2 name\>\"", ",", "12", ",", "Bold"}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"InputField", "[", 
+        RowBox[{
+         RowBox[{"Dynamic", "[", "img2Path", "]"}], ",", 
+         RowBox[{"FieldSize", "->", 
+          RowBox[{"{", 
+           RowBox[{"15", ",", "1"}], "}"}]}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Button", "[", 
+        RowBox[{"\"\<Import\>\"", ",", "\[IndentingNewLine]", 
+         RowBox[{"Dynamic", "[", 
+          RowBox[{
+           RowBox[{"SetDirectory", "[", "directory", "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"img2", "=", 
+            RowBox[{"Import", "[", "img2Path", "]"}]}], ";", "\n", "\t", 
+           RowBox[{"img1", "=", 
+            RowBox[{"Import", "[", "img1Path", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+            "Resize", " ", "img2", " ", "to", " ", "match", " ", "the", " ", 
+             "size", " ", "of", " ", "img1"}], "*)"}], "\[IndentingNewLine]", 
+           
+           RowBox[{"img2Resized", "=", 
+            RowBox[{"ImageResize", "[", 
+             RowBox[{"img2", ",", 
+              RowBox[{"ImageDimensions", "[", "img1", "]"}]}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+            "Convert", " ", "images", " ", "to", " ", "data", " ", "arrays"}],
+             "*)"}], "\[IndentingNewLine]", 
+           RowBox[{"img1Data", "=", 
+            RowBox[{"ImageData", "[", "img1", "]"}]}], ";", "\n", 
+           RowBox[{"img2Data", "=", 
+            RowBox[{"ImageData", "[", "img2Resized", "]"}]}], ";"}], "]"}], 
+         ",", 
+         RowBox[{"ImageSize", "->", "Large"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"combinedImage", "=", "\[IndentingNewLine]", 
+           RowBox[{"ImageAdjust", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Sharpen", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Blur", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"ImageRotate", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"Image", "[", 
+                    RowBox[{
+                    RowBox[{"currentView", " ", "img2Data"}], "+", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", "currentView"}], ")"}], " ", 
+                    "img1Data"}]}], "]"}], ",", "\[IndentingNewLine]", 
+                   "rotationAngle"}], "]"}], ",", "\[IndentingNewLine]", 
+                 "blurRadius"}], "]"}], ",", "\[IndentingNewLine]", 
+               "sharpenRadius"}], "]"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"brightness", ",", "contrast", ",", "gamma"}], "}"}]}], 
+            "]"}]}], ";", "\[IndentingNewLine]", "\n", 
+          RowBox[{"(*", 
+           RowBox[{"Display", " ", "the", " ", "result"}], "*)"}], 
+          "\[IndentingNewLine]", 
+          RowBox[{"Show", "[", 
+           RowBox[{"combinedImage", ",", 
+            RowBox[{"ImageSize", "->", "Medium"}]}], "]"}]}], ",", 
+         RowBox[{"Style", "[", 
+          RowBox[{"\"\<Pictures combination\>\"", ",", "12", ",", "Bold"}], 
+          "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"currentView", ",", "0", ",", "1"}], "}"}], ",", 
+         RowBox[{"Style", "[", 
+          RowBox[{"\"\<Picture rotation [rad]\>\"", ",", "12", ",", "Bold"}], 
+          "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"rotationAngle", ",", "0"}], "}"}], ",", 
+           RowBox[{"-", "Pi"}], ",", "Pi"}], "}"}], ",", 
+         RowBox[{"Style", "[", 
+          RowBox[{"\"\<Radius of blur\>\"", ",", "12", ",", "Bold"}], "]"}], 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{"blurRadius", ",", "0", ",", "100"}], "}"}], ",", 
+         RowBox[{"Style", "[", 
+          RowBox[{"\"\<Radius of sharpening\>\"", ",", "12", ",", "Bold"}], 
+          "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"sharpenRadius", ",", "0", ",", "100"}], "}"}], ",", 
+         RowBox[{"Style", "[", 
+          RowBox[{"\"\<Brightness correction\>\"", ",", "12", ",", "Bold"}], 
+          "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"brightness", ",", "0"}], "}"}], ",", 
+           RowBox[{"-", "10"}], ",", "10"}], "}"}], ",", 
+         RowBox[{"Style", "[", 
+          RowBox[{"\"\<Contrast correction\>\"", ",", "12", ",", "Bold"}], 
+          "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"contrast", ",", "0"}], "}"}], ",", 
+           RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", 
+         RowBox[{"Style", "[", 
+          RowBox[{"\"\<Gamma correction\>\"", ",", "12", ",", "Bold"}], "]"}],
+          ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"gamma", ",", "1"}], "}"}], ",", "0", ",", "10"}], "}"}], 
+         ",", 
+         RowBox[{"Style", "[", 
+          RowBox[{
+          "\"\<Default pictures are private work.\\nSee more on \
+ig:@radek_jedrzejczyk_ and @radekj_photo.\\nFeel free to share, but please \
+credit the author.\>\"", ",", "7"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      "}"}], "]"}]}], "\n", "\[IndentingNewLine]", "]"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", "\n", 
+  "\n", "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.9442801623365393`*^9, 3.9442803215670156`*^9}, {
+   3.944280356923324*^9, 3.9442804746524487`*^9}, {3.944280508227394*^9, 
+   3.944280536347962*^9}, {3.9442805821360893`*^9, 3.9442805946708717`*^9}, {
+   3.9442806678947*^9, 3.9442807011267776`*^9}, {3.94428076850498*^9, 
+   3.944280796994575*^9}, {3.94428084064601*^9, 3.944281203670727*^9}, 
+   3.944281275947132*^9, {3.944281316920699*^9, 3.944281339157834*^9}, {
+   3.944281372385586*^9, 3.944281486616695*^9}, {3.944281536288769*^9, 
+   3.9442815419843903`*^9}, {3.944281595840269*^9, 3.9442816831240873`*^9}, {
+   3.944281905519937*^9, 3.944281907950162*^9}, {3.944282360045857*^9, 
+   3.944282361125183*^9}},ExpressionUUID->"f12aa418-442c-441b-8e3a-\
+e4297feb3f3a"]
+},
+WindowSize->{1147.5, 627},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification:>0.75 Inherited,
+FrontEndVersion->"14.0 for Linux x86 (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"576500f7-c13a-471c-95d8-53ebbe582262"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 7948, 176, 1191, "Input",ExpressionUUID->"f12aa418-442c-441b-8e3a-e4297feb3f3a"]
+}
+]
+*)
+

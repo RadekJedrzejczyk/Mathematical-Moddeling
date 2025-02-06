@@ -1,0 +1,439 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     19735,        431]
+NotebookOptionsPosition[     19128,        412]
+NotebookOutlinePosition[     19553,        429]
+CellTagsIndexPosition[     19510,        426]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"Labeled", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+      "Get", " ", "intiger", " ", "number", " ", "of", " ", "petals"}], 
+      "*)"}], "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"petalsNumber", "=", 
+        RowBox[{"Floor", "[", "petalsNumberL", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Defining", " ", "points", " ", "for", " ", "bezier", " ", "curves"}],
+         "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"petal", "=", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"petalsSize", "*", "2.5"}], ",", 
+            RowBox[{
+             RowBox[{"-", "petalsSize"}], "*", "1.5"}], ",", "1"}], "}"}], 
+          ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"petalsSize", "*", "2.5"}], ",", 
+            RowBox[{"petalsSize", "*", "1.5"}], ",", "1"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "}"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"leaf", "=", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"leavesSize", "/", "2"}], ",", 
+            RowBox[{
+             RowBox[{"-", "leavesSize"}], "/", 
+             RowBox[{"-", "10"}]}], ",", "0.2"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"leavesSize", "*", "2"}], ",", 
+            RowBox[{
+             RowBox[{"-", "leavesSize"}], "*", "2.5"}], ",", "1"}], "}"}], 
+          ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"leavesSize", "*", "3"}], ",", "0", ",", "1.2"}], "}"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"leavesSize", "*", "2"}], ",", 
+            RowBox[{"leavesSize", "*", "2.5"}], ",", "1"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"leavesSize", "/", "2"}], ",", 
+            RowBox[{"leavesSize", "/", "10"}], ",", "0.2"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "}"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"Defining", " ", "additional", " ", "parameters"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"numberOfLeaves", " ", "=", " ", 
+        RowBox[{"Floor", "[", 
+         RowBox[{"flowerHeight", "/", "3"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"leafOffset", "=", 
+        RowBox[{"flowerHeight", "/", 
+         RowBox[{"(", 
+          RowBox[{"numberOfLeaves", "+", "1"}], ")"}]}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"Graphics", " ", "of", " ", "flower", " ", "head"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"flowerHead", "=", 
+        RowBox[{"Graphics3D", "[", 
+         RowBox[{"{", 
+          RowBox[{"Pink", ",", "Thick", ",", "\[IndentingNewLine]", 
+           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Rotate", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Translate", "[", 
+                RowBox[{
+                 RowBox[{"BezierCurve", "[", "petal", "]"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"circleRadius", ",", "0", ",", "flowerHeight"}], 
+                  "}"}]}], "]"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"2", " ", "Pi", " ", 
+                RowBox[{"i", "/", "petalsNumber"}]}], ",", 
+               RowBox[{"{", 
+                RowBox[{"0", ",", "0", ",", "flowerHeight"}], "}"}]}], 
+              "\[IndentingNewLine]", "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "0", ",", 
+               RowBox[{"petalsNumber", "-", "1"}]}], "}"}]}], "]"}], ",", 
+           "\[IndentingNewLine]", "Yellow", ",", "\[IndentingNewLine]", 
+           RowBox[{"Scale", "[", 
+            RowBox[{
+             RowBox[{"Sphere", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"0", ",", "0", ",", "flowerHeight"}], "}"}], ",", 
+               "circleRadius"}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"1", ",", "1", ",", "0.05"}], "}"}]}], "]"}]}], 
+          "\[IndentingNewLine]", "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"Graphics", " ", "of", " ", "flower", " ", "steam"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"steam", "=", 
+        RowBox[{"Graphics3D", "[", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{"Green", ",", "Thick", ",", 
+           RowBox[{"Line", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", "flowerHeight"}], "}"}]}], "}"}], 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"Rotate", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Translate", "[", 
+                RowBox[{
+                 RowBox[{"BezierCurve", "[", "leaf", "]"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"0", ",", "0", ",", 
+                   RowBox[{"leafOffset", "*", "i"}]}], "}"}]}], "]"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"2", "Pi", "*", 
+                RowBox[{"i", "/", "numberOfLeaves"}]}], ",", 
+               RowBox[{"{", 
+                RowBox[{"0", ",", "0", ",", 
+                 RowBox[{"leafOffset", "*", "i"}]}], "}"}]}], 
+              "\[IndentingNewLine]", "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", "numberOfLeaves"}], "}"}]}], 
+            "]"}]}], "\[IndentingNewLine]", "}"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", "Display", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"Show", "[", 
+        RowBox[{"flowerHead", ",", "steam"}], "]"}]}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", "Inputs", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"Style", "[", 
+       RowBox[{"\"\<Flower head size\>\"", ",", "10", ",", "Bold"}], "]"}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"circleRadius", ",", "2"}], "}"}], ",", "0.1", ",", "10"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Style", "[", 
+       RowBox[{"\"\<Flower height\>\"", ",", "10", ",", "Bold"}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"flowerHeight", ",", "6"}], "}"}], ",", "1", ",", "15"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Style", "[", 
+       RowBox[{"\"\<Number of petals\>\"", ",", "10", ",", "Bold"}], "]"}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"petalsNumberL", ",", "10"}], "}"}], ",", "0", ",", "30"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Style", "[", 
+       RowBox[{"\"\<Size of petals\>\"", ",", "10", ",", "Bold"}], "]"}], ",",
+       "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"petalsSize", ",", "2"}], "}"}], ",", "1", ",", "10"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Style", "[", 
+       RowBox[{"\"\<Size of leaves\>\"", ",", "10", ",", "Bold"}], "]"}], ",",
+       "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"leavesSize", ",", "2"}], "}"}], ",", "1", ",", "10"}], 
+       "}"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Style", "[", 
+     RowBox[{"\"\<Flower creator\>\"", ",", "14", ",", "Bold"}], "]"}], ",", 
+    "Top"}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.943948007472976*^9, 3.943948229724221*^9}, {
+   3.9439482638128853`*^9, 3.943948616919148*^9}, {3.943948647268915*^9, 
+   3.943948665300033*^9}, {3.943948698174226*^9, 3.943948736468029*^9}, {
+   3.943948767972143*^9, 3.943948844086177*^9}, {3.943949008692843*^9, 
+   3.943949227445985*^9}, {3.9439492827562017`*^9, 3.943949299402486*^9}, {
+   3.943949349674555*^9, 3.943949415297083*^9}, {3.943949475194408*^9, 
+   3.943949494187593*^9}, {3.9439496384735107`*^9, 3.943949639724317*^9}, {
+   3.943949683140317*^9, 3.943949904837542*^9}, {3.943949942014356*^9, 
+   3.943950076978073*^9}, {3.943950114847186*^9, 3.943950179794989*^9}, {
+   3.943950224594164*^9, 3.9439503398806562`*^9}, {3.943950374823572*^9, 
+   3.943950433259822*^9}, {3.943950464591888*^9, 3.9439504812664022`*^9}, {
+   3.943950541173501*^9, 3.943950743639359*^9}, 3.943950780429824*^9, {
+   3.94395081130793*^9, 3.943950888857382*^9}, {3.9439509356383533`*^9, 
+   3.943950970881452*^9}, {3.9439510108847513`*^9, 3.943951198617291*^9}, {
+   3.943951246752014*^9, 3.943951292841224*^9}, {3.943951323817993*^9, 
+   3.943951333960719*^9}, 3.943951364513532*^9, {3.943951402191277*^9, 
+   3.94395144432443*^9}, {3.943951477144678*^9, 3.943951487682513*^9}, {
+   3.943951527012746*^9, 3.9439517066621456`*^9}, {3.9439517502325916`*^9, 
+   3.943951770584051*^9}, {3.943951809525519*^9, 3.943951885572914*^9}, {
+   3.943952667466427*^9, 3.9439526835911827`*^9}, {3.943952766888701*^9, 
+   3.943952816861514*^9}, {3.943953558578374*^9, 3.943953576891403*^9}, {
+   3.9439536732308407`*^9, 3.943953675802854*^9}, {3.943953873936581*^9, 
+   3.943953907577441*^9}, {3.943954310006838*^9, 3.94395439541212*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"9f9e0fa5-8c45-4fef-99d6-1e1ca24d6f8f"],
+
+Cell[BoxData[
+ TemplateBox[{
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`circleRadius$$ = 
+       2, $CellContext`flowerHeight$$ = 6, $CellContext`leavesSize$$ = 
+       2, $CellContext`petalsNumberL$$ = 10, $CellContext`petalsSize$$ = 2, 
+       Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+       Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+          Hold[
+           Style["Flower head size", 10, Bold]], 
+          Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+           Hold[$CellContext`circleRadius$$], 2}, 0.1, 10, ControlType -> 
+          Manipulator}, {
+          Hold[
+           Style["Flower height", 10, Bold]], 
+          Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+           Hold[$CellContext`flowerHeight$$], 6}, 1, 15, ControlType -> 
+          Manipulator}, {
+          Hold[
+           Style["Number of petals", 10, Bold]], 
+          Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+           Hold[$CellContext`petalsNumberL$$], 10}, 0, 30, ControlType -> 
+          Manipulator}, {
+          Hold[
+           Style["Size of petals", 10, Bold]], 
+          Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+           Hold[$CellContext`petalsSize$$], 2}, 1, 10, ControlType -> 
+          Manipulator}, {
+          Hold[
+           Style["Size of leaves", 10, Bold]], 
+          Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+           Hold[$CellContext`leavesSize$$], 2}, 1, 10, ControlType -> 
+          Manipulator}}, Typeset`size$$ = {324., {160., 164.}}, 
+       Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = 
+       True}, 
+      DynamicBox[
+       Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`circleRadius$$ = 
+          2, $CellContext`flowerHeight$$ = 6, $CellContext`leavesSize$$ = 
+          2, $CellContext`petalsNumberL$$ = 10, $CellContext`petalsSize$$ = 
+          2}, "ControllerVariables" :> {}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, 
+        "Body" :> ($CellContext`petalsNumber = 
+          Floor[$CellContext`petalsNumberL$$]; $CellContext`petal = {{0, 0, 
+            0}, {$CellContext`petalsSize$$ 2.5, (-$CellContext`petalsSize$$) 
+             1.5, 1}, {$CellContext`petalsSize$$ 
+             2.5, $CellContext`petalsSize$$ 1.5, 1}, {0, 0, 
+            0}}; $CellContext`leaf = {{0, 0, 
+            0}, {$CellContext`leavesSize$$/
+             2, (-$CellContext`leavesSize$$)/(-10), 
+             0.2}, {$CellContext`leavesSize$$ 2, (-$CellContext`leavesSize$$) 
+             2.5, 1}, {$CellContext`leavesSize$$ 3, 0, 
+             1.2}, {$CellContext`leavesSize$$ 2, $CellContext`leavesSize$$ 
+             2.5, 1}, {$CellContext`leavesSize$$/2, $CellContext`leavesSize$$/
+             10, 0.2}, {0, 0, 0}}; $CellContext`numberOfLeaves = 
+          Floor[$CellContext`flowerHeight$$/
+            3]; $CellContext`leafOffset = \
+$CellContext`flowerHeight$$/($CellContext`numberOfLeaves + 
+           1); $CellContext`flowerHead = Graphics3D[{Pink, Thick, 
+             Table[
+              Rotate[
+               Translate[
+                
+                BezierCurve[$CellContext`petal], {$CellContext`circleRadius$$,
+                  0, $CellContext`flowerHeight$$}], 2 
+               Pi ($CellContext`i/$CellContext`petalsNumber), {
+               0, 0, $CellContext`flowerHeight$$}], {$CellContext`i, 
+               0, $CellContext`petalsNumber - 1}], Yellow, 
+             Scale[
+              
+              Sphere[{0, 
+                0, $CellContext`flowerHeight$$}, \
+$CellContext`circleRadius$$], {1, 1, 0.05}]}]; $CellContext`steam = 
+          Graphics3D[{Green, Thick, 
+             Line[{{0, 0, 0}, {0, 0, $CellContext`flowerHeight$$}}], 
+             Table[
+              Rotate[
+               Translate[
+                BezierCurve[$CellContext`leaf], {
+                0, 0, $CellContext`leafOffset $CellContext`i}], 2 
+               Pi ($CellContext`i/$CellContext`numberOfLeaves), {
+               0, 0, $CellContext`leafOffset $CellContext`i}], \
+{$CellContext`i, 1, $CellContext`numberOfLeaves}]}]; 
+         Show[$CellContext`flowerHead, $CellContext`steam]), "Specifications" :> {
+          Style[
+          "Flower head size", 10, Bold], {{$CellContext`circleRadius$$, 2}, 
+           0.1, 10}, 
+          Style[
+          "Flower height", 10, Bold], {{$CellContext`flowerHeight$$, 6}, 1, 
+           15}, 
+          Style[
+          "Number of petals", 10, Bold], {{$CellContext`petalsNumberL$$, 10}, 
+           0, 30}, 
+          Style[
+          "Size of petals", 10, Bold], {{$CellContext`petalsSize$$, 2}, 1, 
+           10}, 
+          Style[
+          "Size of leaves", 10, Bold], {{$CellContext`leavesSize$$, 2}, 1, 
+           10}}, "Options" :> {}, "DefaultOptions" :> {}], 
+       ImageSizeCache -> {618., {186.8515625, 192.1484375}}, SingleEvaluation -> 
+       True], Deinitialization :> None, DynamicModuleValues :> {}, 
+      SynchronousInitialization -> True, 
+      UndoTrackedVariables :> {Typeset`show$$, Typeset`bookmarkMode$$}, 
+      UnsavedVariables :> {Typeset`initDone$$}, 
+      UntrackedVariables :> {Typeset`size$$}], "Manipulate", Deployed -> True,
+      StripOnInput -> False], 
+    Manipulate`InterpretManipulate[1]], 
+   StyleBox["\"Flower creator\"", 14, Bold, StripOnInput -> False]},
+  "Labeled",
+  DisplayFunction->(GridBox[{{
+      ItemBox[#2, DefaultBaseStyle -> "LabeledLabel"]}, {
+      TagBox[
+       ItemBox[
+        PaneBox[
+         TagBox[#, "SkipImageSizeLevel"], Alignment -> {Center, Baseline}, 
+         BaselinePosition -> Baseline], DefaultBaseStyle -> "Labeled"], 
+       "SkipImageSizeLevel"]}}, 
+    GridBoxAlignment -> {"Columns" -> {{Center}}, "Rows" -> {{Center}}}, 
+    AutoDelete -> False, 
+    GridBoxItemSize -> {"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+    BaselinePosition -> {2, 1}]& ),
+  InterpretationFunction->(RowBox[{"Labeled", "[", 
+     RowBox[{#, ",", #2, ",", "Top", ",", 
+       RowBox[{"{", "}"}]}], "]"}]& )]], "Output",
+ CellChangeTimes->{{3.943948061331786*^9, 3.943948114791878*^9}, {
+   3.9439481758581333`*^9, 3.943948210668449*^9}, {3.943948282672857*^9, 
+   3.943948342383747*^9}, {3.943948389963702*^9, 3.943948430450914*^9}, 
+   3.943948466646502*^9, {3.943948509405554*^9, 3.9439485253966627`*^9}, {
+   3.943948556365025*^9, 3.943948617747828*^9}, {3.943948648491077*^9, 
+   3.943948666052998*^9}, 3.943948720728231*^9, 3.943949087583583*^9, 
+   3.94394914520679*^9, 3.943949199994094*^9, 3.943949300465897*^9, 
+   3.943949416023545*^9, 3.943949640376807*^9, {3.9439497196842823`*^9, 
+   3.943949905396009*^9}, {3.943949947136538*^9, 3.943949987681304*^9}, {
+   3.943950111520873*^9, 3.943950128297853*^9}, 3.94395034787888*^9, 
+   3.943950378975253*^9, {3.943950441320483*^9, 3.9439504685220017`*^9}, {
+   3.943950575301889*^9, 3.9439505944788213`*^9}, 3.943950631871027*^9, {
+   3.943950730304257*^9, 3.943950744552868*^9}, 3.943950781552671*^9, {
+   3.943950839287298*^9, 3.943950889761279*^9}, 3.94395097184211*^9, {
+   3.9439510473651676`*^9, 3.943951064596269*^9}, {3.943951096900127*^9, 
+   3.943951132504965*^9}, {3.943951162598178*^9, 3.943951199824587*^9}, {
+   3.9439512528854747`*^9, 3.943951293856433*^9}, {3.943951325991517*^9, 
+   3.943951335246138*^9}, 3.943951368262401*^9, 3.943951404447499*^9, 
+   3.943951445600996*^9, 3.943951488401689*^9, {3.943951710089333*^9, 
+   3.943951721223927*^9}, {3.943951751225781*^9, 3.943951781047073*^9}, 
+   3.943951835958449*^9, 3.943951888103436*^9, 3.9439526000564837`*^9, 
+   3.943952644902848*^9, 3.943952684271102*^9, {3.943952786884253*^9, 
+   3.9439528173030663`*^9}, {3.9439528579490232`*^9, 3.943952859136837*^9}, 
+   3.94395348532436*^9, 3.94395358425235*^9, 3.943953717441758*^9, {
+   3.943953875124428*^9, 3.943953908411715*^9}, 3.943954396594654*^9},
+ CellLabel->"Out[1]=",ExpressionUUID->"866c5942-0d02-4a80-b20e-fd0db7263269"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.943953869043777*^9, 
+  3.9439538698732233`*^9}},ExpressionUUID->"1f4a2e8c-e4ea-4597-8d2e-\
+083c72d653e0"]
+},
+WindowSize->{1147.5, 627},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification:>0.9 Inherited,
+FrontEndVersion->"14.0 for Linux x86 (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"9d0450c9-2277-4875-af57-92f069b9cfb6"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 10097, 224, 1349, "Input",ExpressionUUID->"9f9e0fa5-8c45-4fef-99d6-1e1ca24d6f8f"],
+Cell[10680, 248, 8275, 156, 441, "Output",ExpressionUUID->"866c5942-0d02-4a80-b20e-fd0db7263269"]
+}, Open  ]],
+Cell[18970, 407, 154, 3, 26, "Input",ExpressionUUID->"1f4a2e8c-e4ea-4597-8d2e-083c72d653e0"]
+}
+]
+*)
+

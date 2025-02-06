@@ -1,0 +1,1453 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     66588,       1445]
+NotebookOptionsPosition[     65779,       1424]
+NotebookOutlinePosition[     66204,       1441]
+CellTagsIndexPosition[     66161,       1438]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"equinoxDay", "=", 
+   RowBox[{"DateObject", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"2025", ",", "3", ",", "20", ",", "9", ",", "2", ",", "0"}], 
+      "}"}], ",", "\"\<Instant\>\""}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"objectPosition", "=", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"stationsCoordinates", "=", 
+   RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"stationsTable", "=", 
+   RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"EarthRadius", "=", "6371"}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"latlonTocoordinates", "[", 
+     RowBox[{"lat_", ",", "lon_", ",", "dayDiffrence_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "x", ",", "y", ",", "z", ",", "coords", ",", "adjLon", ",", 
+        "xyEarthRadius"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"adjLon", "=", 
+        RowBox[{"lon", "+", 
+         RowBox[{"360", " ", "*", "dayDiffrence"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"xyEarthRadius", "=", 
+        RowBox[{"EarthRadius", "*", 
+         RowBox[{"Cos", "[", 
+          RowBox[{"lat", " ", "Degree"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"x", "=", 
+        RowBox[{
+         RowBox[{"Sin", "[", " ", 
+          RowBox[{"adjLon", " ", "Degree"}], " ", "]"}], "*", 
+         "xyEarthRadius"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"y", "=", 
+        RowBox[{
+         RowBox[{"Cos", "[", " ", 
+          RowBox[{"adjLon", " ", "Degree"}], "]"}], "*", "xyEarthRadius"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"z", "=", 
+        RowBox[{
+         RowBox[{"Sin", "[", 
+          RowBox[{"lat", " ", "Degree"}], "]"}], "*", "EarthRadius"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"coords", "=", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", "y", ",", "z"}], "}"}]}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"getAltitude", "[", 
+     RowBox[{"objectCoordinates_", ",", "stationCoordinates_"}], "]"}], ":=", 
+    
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "stationToObject", ",", "centerToObject", ",", "centerToStation", ",", 
+        "altitudeSol", ",", "altitude"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"centerToObject", "=", 
+        RowBox[{"EuclideanDistance", "[", 
+         RowBox[{"objectCoordinates", ",", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"stationToObject", "=", 
+        RowBox[{"EuclideanDistance", "[", 
+         RowBox[{"objectCoordinates", ",", "stationCoordinates"}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"centerToStation", " ", "=", " ", 
+        RowBox[{"EuclideanDistance", "[", 
+         RowBox[{"stationCoordinates", ",", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"altitudeSol", " ", "=", 
+        RowBox[{"NSolve", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"centerToObject", "==", 
+             RowBox[{"Sqrt", "[", 
+              RowBox[{
+               RowBox[{"stationToObject", "^", "2"}], "+", 
+               RowBox[{"centerToStation", "^", "2"}], "-", 
+               RowBox[{
+               "2", "*", "stationToObject", "*", "centerToStation", "*", 
+                RowBox[{"Cos", "[", 
+                 RowBox[{
+                  RowBox[{"90", "Degree"}], "+", 
+                  RowBox[{"angle", " ", "Degree"}]}], "]"}]}]}], "]"}]}], ",", 
+            RowBox[{
+             RowBox[{"-", "90"}], "<=", "angle", "<=", "90"}]}], "}"}], ",", 
+          "angle", ",", 
+          RowBox[{"WorkingPrecision", "->", "MachinePrecision"}]}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"altitude", "=", " ", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"angle", "/.", "altitudeSol"}], ")"}], "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}]}]}], "\[IndentingNewLine]", "]"}]}],
+    ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"stationsSetting", "=", 
+   RowBox[{"DynamicModule", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"alt", ",", 
+       RowBox[{"currentDay", "=", "20"}], ",", 
+       RowBox[{"currentMonth", "=", "1"}], ",", 
+       RowBox[{"currentYear", "=", "2025"}], ",", 
+       RowBox[{"currentHour", "=", "12"}], ",", 
+       RowBox[{"currentMinute", "=", "0"}], ",", "difference", ",", 
+       "currentDate", ",", "indexToDelete", ",", 
+       RowBox[{"altitudesVisible", "=", 
+        RowBox[{"{", "}"}]}], ",", 
+       RowBox[{"id", "=", "\"\<Gliwice\>\""}], ",", 
+       RowBox[{"idDel", "=", "\"\<Gliwice\>\""}], ",", 
+       RowBox[{"lat", "=", "50.29761"}], ",", 
+       RowBox[{"lon", "=", "18.67658"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"Column", "[", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Style", "[", 
+         RowBox[{"\"\<Set correct date\>\"", ",", "12", ",", "Bold"}], "]"}], 
+        ",", "\[IndentingNewLine]", 
+        RowBox[{"Row", "[", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", "\"\<Day\>\"", "]"}], ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "currentDay", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"4", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", "\"\<Month\>\"", "]"}], ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "currentMonth", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"4", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", "\"\<Year\>\"", "]"}], ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "currentYear", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"4", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", "\"\<Hour\>\"", "]"}], ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "currentHour", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"4", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", "\"\<Minute\>\"", "]"}], ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "currentMinute", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"4", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Dynamic", "[", 
+            RowBox[{
+             RowBox[{"currentDate", "=", 
+              RowBox[{"DateObject", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{
+                 "currentYear", ",", "currentMonth", ",", "currentDay", ",", 
+                  "currentHour", ",", "currentMinute", ",", "0"}], "}"}], 
+                ",", "\"\<Instant\>\""}], "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"difference", "=", 
+              RowBox[{"currentDate", "-", "equinoxDay"}]}], ";", " ", 
+             RowBox[{"Style", "[", "\"\<\>\"", "]"}]}], "]"}]}], 
+          "\[IndentingNewLine]", "}"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Style", "[", 
+         RowBox[{"\"\<Stations configuration\>\"", ",", "12", ",", "Bold"}], 
+         "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Row", "[", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Column", "[", 
+            RowBox[{"{", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Row", "[", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Column", "[", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"Style", "[", "\"\<ID\>\"", "]"}], ",", 
+                    RowBox[{"InputField", "[", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "id", "]"}], ",", 
+                    RowBox[{"FieldSize", "->", 
+                    RowBox[{"{", 
+                    RowBox[{"6", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}],
+                  ",", "\[IndentingNewLine]", 
+                 RowBox[{"Column", "[", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{
+                    "Style", "[", "\"\<Latitude [\[Degree]]\>\"", "]"}], ",", 
+                    
+                    RowBox[{"InputField", "[", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "lat", "]"}], ",", 
+                    RowBox[{"FieldSize", "->", 
+                    RowBox[{"{", 
+                    RowBox[{"6", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], "]"}],
+                  ",", "\[IndentingNewLine]", 
+                 RowBox[{"Column", "[", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{
+                    "Style", "[", "\"\<Longitude [\[Degree]]\>\"", "]"}], ",", 
+                    RowBox[{"InputField", "[", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", "lon", "]"}], ",", 
+                    RowBox[{"FieldSize", "->", 
+                    RowBox[{"{", 
+                    RowBox[{"6", ",", "1"}], "}"}]}]}], "]"}]}], "}"}], 
+                  "]"}]}], "\[IndentingNewLine]", "}"}], "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Button", "[", 
+               RowBox[{
+                RowBox[{"Style", "[", 
+                 RowBox[{"\"\<ADD\>\"", ",", "10", ",", "Bold"}], "]"}], ",", 
+                
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"alt", "=", 
+                   RowBox[{"getAltitude", "[", 
+                    RowBox[{"objectPosition", ",", 
+                    RowBox[{"latlonTocoordinates", "[", 
+                    RowBox[{"lat", ",", "lon", ",", 
+                    RowBox[{"difference", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], "]"}]}], ",", 
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"stationsTable", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"id", ",", "lat", ",", "lon", ",", "alt", ",", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"alt", ">", "0"}], ",", "Green", ",", "Red"}], 
+                    "]"}]}], "}"}]}], "]"}]}], "}"}]}], "]"}]}], 
+             "\[IndentingNewLine]", "}"}], "]"}], ",", "\[IndentingNewLine]", 
+           
+           RowBox[{"Column", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", "\"\<Remove station by ID\>\"", "]"}], 
+              ",", 
+              RowBox[{"InputField", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "idDel", "]"}], ",", 
+                RowBox[{"FieldSize", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"6", ",", "1"}], "}"}]}]}], "]"}], ",", 
+              RowBox[{"Button", "[", 
+               RowBox[{
+                RowBox[{"Style", "[", 
+                 RowBox[{"\"\<DELETE\>\"", ",", "10", ",", "Bold"}], "]"}], 
+                ",", 
+                RowBox[{"stationsTable", "=", 
+                 RowBox[{"DeleteCases", "[", 
+                  RowBox[{"stationsTable", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"idDel", ",", "_", ",", "_", ",", "_", ",", "_"}],
+                     "}"}]}], "]"}]}]}], "]"}]}], "}"}], "]"}]}], 
+          "\[IndentingNewLine]", "}"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Style", "[", 
+         RowBox[{"\"\<List of stations\>\"", ",", "12", ",", "Bold"}], "]"}], 
+        ",", "\[IndentingNewLine]", 
+        RowBox[{"Dynamic", "[", 
+         RowBox[{"TableForm", "[", 
+          RowBox[{"stationsTable", ",", 
+           RowBox[{"TableHeadings", "->", 
+            RowBox[{"{", 
+             RowBox[{"None", ",", " ", 
+              RowBox[{"{", 
+               RowBox[{
+               "\"\<ID\>\"", ",", "\"\<Latitude [\[Degree]]\>\"", ",", 
+                "\"\<Longitude [\[Degree]]\>\"", ",", 
+                "\"\<Sat altitude [\[Degree]]\>\"", ",", 
+                "\"\<Visibility\>\""}], "}"}]}], "}"}]}]}], "]"}], "]"}], ",",
+         "\[IndentingNewLine]", 
+        RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"stationsCoordinates", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"latlonTocoordinates", "[", 
+              RowBox[{
+               RowBox[{"stationsTable", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "2"}], "]"}], "]"}], ",", 
+               RowBox[{"stationsTable", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "3"}], "]"}], "]"}], ",", 
+               RowBox[{"difference", "[", 
+                RowBox[{"[", "1", "]"}], "]"}]}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", 
+               RowBox[{"Length", "[", "stationsTable", "]"}]}], "}"}]}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Style", "[", "\"\<\>\"", "]"}]}], "\[IndentingNewLine]", 
+         "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Button", "[", 
+         RowBox[{
+          RowBox[{"Style", "[", 
+           RowBox[{"\"\<REFRESH TABLE\>\"", ",", "10", ",", "Bold"}], "]"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"stationsTable", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"stationsTable", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+               RowBox[{"stationsTable", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "2"}], "]"}], "]"}], ",", 
+               RowBox[{"stationsTable", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "3"}], "]"}], "]"}], ",", 
+               RowBox[{"getAltitude", "[", 
+                RowBox[{"objectPosition", ",", 
+                 RowBox[{"latlonTocoordinates", "[", 
+                  RowBox[{
+                   RowBox[{"stationsTable", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "2"}], "]"}], "]"}], ",", 
+                   RowBox[{"stationsTable", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "3"}], "]"}], "]"}], ",", 
+                   RowBox[{"difference", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], "]"}], ",", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"getAltitude", "[", 
+                   RowBox[{"objectPosition", ",", 
+                    RowBox[{"latlonTocoordinates", "[", 
+                    RowBox[{
+                    RowBox[{"stationsTable", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "2"}], "]"}], "]"}], ",", 
+                    RowBox[{"stationsTable", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "3"}], "]"}], "]"}], ",", 
+                    RowBox[{"difference", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], "]"}], ">", 
+                  "0"}], ",", "Green", ",", "Red"}], "]"}]}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", 
+               RowBox[{"Length", "[", "stationsTable", "]"}]}], "}"}]}], 
+            "]"}]}]}], "]"}]}], "\[IndentingNewLine]", "}"}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.942638722723795*^9, 3.942638722904435*^9}, 
+   3.946365694736278*^9, {3.946369610487764*^9, 3.946369726307169*^9}, {
+   3.946369884648913*^9, 3.946369966829096*^9}, {3.946370029105669*^9, 
+   3.946370286146644*^9}, {3.9463703200902777`*^9, 3.946370478839492*^9}, {
+   3.946370512023549*^9, 3.946370645973035*^9}, {3.946370677443819*^9, 
+   3.94637097432684*^9}, {3.94637114131076*^9, 3.946371172618318*^9}, {
+   3.946371224887472*^9, 3.94637123799876*^9}, {3.94637128082191*^9, 
+   3.946371416302007*^9}, {3.9463714827500257`*^9, 3.94637148623626*^9}, {
+   3.946371575987848*^9, 3.946371614352119*^9}, {3.946371661017103*^9, 
+   3.946371724337564*^9}, {3.9463717549892883`*^9, 3.946371757866313*^9}, {
+   3.946372297352345*^9, 3.946372382450948*^9}, {3.94637241261308*^9, 
+   3.946372426805018*^9}, {3.946372502755504*^9, 3.946372522073312*^9}, {
+   3.9463728372772427`*^9, 3.94637298729357*^9}, {3.946373059504915*^9, 
+   3.946373072627214*^9}, {3.946373110736587*^9, 3.946373184459346*^9}, {
+   3.946373218192059*^9, 3.946373227024023*^9}, {3.946373289009917*^9, 
+   3.946373323277741*^9}, {3.946373371055126*^9, 3.946373371468462*^9}, {
+   3.946373402666422*^9, 3.946373581917495*^9}, {3.946373667113117*^9, 
+   3.9463736883187437`*^9}, {3.946373871223672*^9, 3.94637388546686*^9}, {
+   3.946374027843351*^9, 3.946374046918936*^9}, {3.946375078538594*^9, 
+   3.946375110323275*^9}, {3.946375165478662*^9, 3.946375236352918*^9}, {
+   3.946375271847131*^9, 3.946375360840794*^9}, {3.946375443047555*^9, 
+   3.946375538432644*^9}, {3.946375589568087*^9, 3.946375712451066*^9}, {
+   3.946375755208804*^9, 3.946375803758518*^9}, {3.946375858804607*^9, 
+   3.946375862377733*^9}, {3.946375894949858*^9, 3.946376048608975*^9}, {
+   3.946376100895125*^9, 3.946376208482224*^9}, {3.946376264836067*^9, 
+   3.946376286848955*^9}, {3.9463763168988533`*^9, 3.946376327728368*^9}, {
+   3.9463763606140957`*^9, 3.946376443550449*^9}, 3.946376510608987*^9, {
+   3.946376591147896*^9, 3.946376664435618*^9}, {3.946376714901449*^9, 
+   3.946376799769408*^9}, {3.946376833728779*^9, 3.9463768596199417`*^9}, {
+   3.946376989998292*^9, 3.946377005378621*^9}, 3.946377696109256*^9, {
+   3.946377790301108*^9, 3.94637786116698*^9}, {3.946377966476853*^9, 
+   3.946378016007683*^9}, {3.946378067251667*^9, 3.946378120277535*^9}, {
+   3.946378220805503*^9, 3.946378416990289*^9}, {3.946378516016245*^9, 
+   3.946378559386279*^9}, {3.9463786274445133`*^9, 3.946378630632149*^9}, {
+   3.946378753550969*^9, 3.946378755696471*^9}, {3.946378822379134*^9, 
+   3.946378845935958*^9}, {3.946378918602069*^9, 3.946378950709711*^9}, {
+   3.946379663012177*^9, 3.946379666973467*^9}, {3.946380226956385*^9, 
+   3.946380291777594*^9}, 3.946380522017722*^9, {3.946705955579832*^9, 
+   3.946705958947368*^9}, {3.946706018767728*^9, 3.946706049479807*^9}, {
+   3.946706099501055*^9, 3.9467061001466427`*^9}, {3.946706162174217*^9, 
+   3.946706177455517*^9}, {3.946706238599634*^9, 3.946706297589329*^9}, {
+   3.94670633768228*^9, 3.9467063383109293`*^9}, {3.946706878216074*^9, 
+   3.9467069024185677`*^9}, {3.946958616876265*^9, 3.946958653675486*^9}, {
+   3.9474084223763227`*^9, 3.947408422626102*^9}},
+ CellLabel->"In[13]:=",ExpressionUUID->"ed40080a-6449-49ad-9d84-15297d2f42bd"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"stationsSetting", "\[IndentingNewLine]", 
+   RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"stationsDisplay", "=", 
+        RowBox[{"Graphics3D", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"PointSize", "->", "Large"}], ",", "Green", ",", 
+           RowBox[{"Point", "[", "stationsCoordinates", "]"}], ",", "Black", 
+           ",", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"Text", "[", 
+              RowBox[{
+               RowBox[{"stationsTable", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+               RowBox[{"stationsCoordinates", "[", 
+                RowBox[{"[", "i", "]"}], "]"}]}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", 
+               RowBox[{"Length", "[", "stationsTable", "]"}]}], "}"}]}], 
+            "]"}]}], "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"plotRange", "=", 
+        RowBox[{"semiMajorAxis", "*", 
+         RowBox[{"(", 
+          RowBox[{"1", "+", "eccentricity"}], ")"}]}]}], ";", "\n", 
+       RowBox[{"semiMinorAxis", "=", 
+        RowBox[{"Sqrt", "[", 
+         RowBox[{
+          RowBox[{"semiMajorAxis", "^", "2"}], "*", 
+          RowBox[{"(", 
+           RowBox[{"1", "-", 
+            RowBox[{"eccentricity", "^", "2"}]}], ")"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"Rotation", " ", "matrices"}], "*)"}], "\n", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Rotate", " ", "around", " ", "Z", " ", "to", " ", "get", " ", 
+         "ascending", " ", "node", " ", "in", " ", "the", " ", "right", " ", 
+         "place"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"rotationZ", "[", "angle_", "]"}], ":=", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Cos", "[", "angle", "]"}], ",", 
+            RowBox[{"-", 
+             RowBox[{"Sin", "[", "angle", "]"}]}], ",", "0"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Sin", "[", "angle", "]"}], ",", 
+            RowBox[{"Cos", "[", "angle", "]"}], ",", "0"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "}"}]}], ";", "\n", 
+       RowBox[{"(*", 
+        RowBox[{"Set", " ", "the", " ", "inclination"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"rotationX", "[", "angle_", "]"}], ":=", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"1", ",", "0", ",", "0"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", 
+            RowBox[{"Cos", "[", "angle", "]"}], ",", 
+            RowBox[{"-", 
+             RowBox[{"Sin", "[", "angle", "]"}]}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", 
+            RowBox[{"Sin", "[", "angle", "]"}], ",", 
+            RowBox[{"Cos", "[", "angle", "]"}]}], "}"}]}], "}"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"rotationY", "[", "angle_", "]"}], ":=", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Cos", "[", "angle", "]"}], ",", "0", ",", 
+            RowBox[{"Sin", "[", "angle", "]"}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", "1", ",", "0"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", 
+             RowBox[{"Sin", "[", "angle", "]"}]}], ",", "0", ",", 
+            RowBox[{"Cos", "[", "angle", "]"}]}], "}"}]}], "}"}]}], ";", "\n", 
+       RowBox[{"rotationOrbit", "=", 
+        RowBox[{
+         RowBox[{"rotationZ", "[", "longitudeAscendingNode", "]"}], ".", 
+         RowBox[{"rotationX", "[", "inclinationAngle", "]"}], ".", 
+         RowBox[{"rotationZ", "[", "argumentPeriapsis", "]"}]}]}], ";", "\n", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Parametric", " ", "equation", " ", "for", " ", "the", " ", "orbit", 
+         " ", "in", " ", "its", " ", "local", " ", "plane"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"orbitEquation", "[", "t_", "]"}], ":=", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"semiMajorAxis", " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"Cos", "[", "t", "]"}], "-", "eccentricity"}], ")"}]}], 
+          ",", 
+          RowBox[{"semiMinorAxis", " ", 
+           RowBox[{"Sin", "[", "t", "]"}]}], ",", "0"}], "}"}]}], ";", "\n", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Rotate", " ", "the", " ", "orbit", " ", "into", " ", "the", " ", 
+         "global", " ", "frame"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"rotatedOrbit", "[", "t_", "]"}], ":=", 
+        RowBox[{"rotationOrbit", ".", 
+         RowBox[{"orbitEquation", "[", "t", "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Position", " ", "of", " ", "the", " ", "planet", " ", "at", " ", 
+         "the", " ", "true", " ", "anomaly"}], "*)"}], "\n", 
+       RowBox[{"objectPosition", "=", 
+        RowBox[{"rotationOrbit", ".", 
+         RowBox[{"orbitEquation", "[", "trueAnomaly", "]"}]}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"Earth", " ", "at", " ", "the", " ", "origin"}], "*)"}], "\n", 
+       RowBox[{"Earth", "=", 
+        RowBox[{"Graphics3D", "[", 
+         RowBox[{"{", 
+          RowBox[{"Blue", ",", 
+           RowBox[{"Sphere", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", "EarthRadius"}], 
+            "]"}]}], "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Define", " ", "coordinate", " ", "axes", " ", "for", " ", "the", " ",
+          "solar", " ", "system"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"earthAxes", "=", 
+        RowBox[{"Graphics3D", "[", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{"X", "-", "axis"}], "*)"}], 
+          RowBox[{"Thin", ",", "Green", ",", 
+           RowBox[{"Line", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"-", "plotRange"}], ",", "0", ",", "0"}], "}"}], ",", 
+              
+              RowBox[{"{", 
+               RowBox[{"plotRange", ",", "0", ",", "0"}], "}"}]}], "}"}], 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{"Y", "-", "axis"}], "*)"}], "Red", ",", 
+           RowBox[{"Line", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"0", ",", 
+                RowBox[{"-", "plotRange"}], ",", "0"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "plotRange", ",", "0"}], "}"}]}], "}"}], 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{"Z", "-", "axis"}], "*)"}], "Purple", ",", 
+           RowBox[{"Line", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", 
+                RowBox[{"-", "plotRange"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", "plotRange"}], "}"}]}], "}"}], 
+            "]"}]}], " ", "}"}], "]"}]}], ";", "\[IndentingNewLine]", "\n", 
+       RowBox[{"(*", 
+        RowBox[{"Plot", " ", "the", " ", "orbit"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"orbitPath", "=", 
+        RowBox[{"ParametricPlot3D", "[", 
+         RowBox[{
+          RowBox[{"rotatedOrbit", "[", "t", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"t", ",", 
+            RowBox[{
+             RowBox[{"-", "2"}], " ", "Pi"}], ",", 
+            RowBox[{"2", "Pi"}]}], " ", "}"}], ",", 
+          RowBox[{"PlotStyle", "->", 
+           RowBox[{"{", 
+            RowBox[{"Dashed", ",", "Black"}], "}"}]}], ",", 
+          RowBox[{"Boxed", "->", "False"}], ",", 
+          RowBox[{"Axes", "->", "False"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"Object", " ", "representation"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"object", "=", 
+        RowBox[{"Graphics3D", "[", 
+         RowBox[{"{", 
+          RowBox[{"Red", ",", 
+           RowBox[{"PointSize", "[", "Large", "]"}], ",", 
+           RowBox[{"Point", "[", "objectPosition", "]"}], ",", "Black", ",", 
+           RowBox[{"Text", "[", 
+            RowBox[{
+             RowBox[{"Style", "[", 
+              RowBox[{"\"\<Satellite\>\"", ",", "12", ",", "Bold"}], "]"}], 
+             ",", 
+             RowBox[{"objectPosition", "+", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", 
+                RowBox[{"0.3", "*", "plotRange"}], ",", "0"}], "}"}]}]}], 
+            "]"}]}], "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"viewAngle", "=", 
+        RowBox[{"viewAngleDeg", " ", "Degree"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"nadirAngle", "=", 
+        RowBox[{"nadirAngleDeg", " ", "Degree"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"perpAngle", "=", 
+        RowBox[{"perpAngleDeg", " ", "Degree"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"coneRadius", " ", "=", " ", 
+        RowBox[{
+         RowBox[{"Sin", "[", 
+          RowBox[{"viewAngle", "/", "2"}], "]"}], "*", "viewRange"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"coneRotation", "=", 
+        RowBox[{
+         RowBox[{"rotationZ", "[", "longitudeAscendingNode", "]"}], ".", 
+         RowBox[{"rotationX", "[", "inclinationAngle", "]"}], ".", 
+         RowBox[{"rotationZ", "[", 
+          RowBox[{"trueAnomaly", "-", "nadirAngle"}], "]"}], ".", 
+         RowBox[{"rotationZ", "[", "argumentPeriapsis", "]"}], ".", 
+         RowBox[{"rotationY", "[", "perpAngle", "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"viewCone", " ", "=", 
+        RowBox[{"Graphics3D", "[", 
+         RowBox[{"{", 
+          RowBox[{"Yellow", ",", 
+           RowBox[{"Opacity", "[", "0.5", "]"}], ",", 
+           RowBox[{"Cone", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"coneRotation", ".", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"-", "viewRange"}], ",", "0", ",", "0"}], "}"}]}], 
+                "+", "objectPosition"}], ",", "objectPosition"}], "}"}], ",", 
+             "coneRadius"}], "]"}]}], " ", "}"}], "]"}]}], ";"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{"Ascending", " ", "node", " ", "direction"}], "*)"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"ascendingNodeDirection", "=", 
+       RowBox[{
+        RowBox[{"rotationZ", "[", "longitudeAscendingNode", "]"}], ".", 
+        RowBox[{"{", 
+         RowBox[{"plotRange", ",", "0", ",", "0"}], "}"}]}]}], ";", "\n", 
+      "\[IndentingNewLine]", 
+      RowBox[{"nodeLine", "=", 
+       RowBox[{"Graphics3D", "[", 
+        RowBox[{"{", 
+         RowBox[{"Blue", ",", "Dashed", ",", 
+          RowBox[{"Line", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+             RowBox[{"ascendingNodeDirection", "*", "1.5"}]}], "}"}], "]"}]}],
+          "\n", "}"}], "]"}]}], ";", "\n", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "Combine", " ", "all", " ", "elements", " ", "into", " ", "the", " ", 
+        "visualization"}], "*)"}], "\n", 
+      RowBox[{"GraphicsColumn", "[", 
+       RowBox[{
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{"Show", "[", 
+          RowBox[{
+          "Earth", ",", " ", "earthAxes", ",", "orbitPath", ",", "nodeLine", 
+           ",", "object", ",", "viewCone", ",", "stationsDisplay", ",", 
+           RowBox[{"ImageSize", "->", "Medium"}], ",", 
+           RowBox[{"Axes", "->", "True"}], ",", 
+           RowBox[{"PlotRange", "->", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"-", "plotRange"}], ",", "plotRange"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"-", "plotRange"}], ",", "plotRange"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"-", "plotRange"}], ",", "plotRange"}], "}"}]}], 
+             "}"}]}], ",", 
+           RowBox[{"PlotLabel", "->", "\"\<3D view\>\""}]}], "]"}], "}"}], 
+        ",", 
+        RowBox[{"ImageSize", "->", "Large"}]}], "]"}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{"\"\<\\t\\tOrbit elements\>\"", ",", "12", ",", "Bold"}], "]"}],
+      ",", "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{"\"\<Orbital eccentricity [-]\>\"", ",", "10", ",", "Bold"}], 
+      "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"eccentricity", ",", "0"}], "}"}], ",", "0", ",", "0.999"}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{"\"\<Semi-major axis [km]\>\"", ",", "10", ",", "Bold"}], "]"}],
+      ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"semiMajorAxis", ",", "20000"}], "}"}], ",", "EarthRadius", 
+       ",", "70000"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{"\"\<Inclination [rad]\>\"", ",", "10", ",", "Bold"}], "]"}], 
+     ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"inclinationAngle", ",", "0"}], "}"}], ",", 
+       RowBox[{"-", "Pi"}], ",", "Pi"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{
+      "\"\<Longitude of ascending node [rad]\>\"", ",", "10", ",", "Bold"}], 
+      "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"longitudeAscendingNode", ",", "0"}], " ", "}"}], ",", 
+       RowBox[{"-", "Pi"}], ",", "Pi"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{"\"\<Argument of periapsis [rad]\>\"", ",", "10", ",", "Bold"}],
+       "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"argumentPeriapsis", ",", "0"}], "}"}], ",", 
+       RowBox[{"-", "Pi"}], ",", "Pi"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{
+      "\"\<True anomaly (current position) [rad]\>\"", ",", "10", ",", 
+       "Bold"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"trueAnomaly", ",", "0"}], " ", "}"}], ",", 
+       RowBox[{"-", "Pi"}], ",", "Pi"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{"\"\<\\t\\tSatellite detector\>\"", ",", "12", ",", "Bold"}], 
+      "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{"\"\<Angle of view [\[Degree]]\>\"", ",", "10", ",", "Bold"}], 
+      "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"viewAngleDeg", ",", "10"}], "}"}], ",", "0.01", ",", 
+       "179.999"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{
+      "\"\<Angle from nadir in the direction of movement [\[Degree]]\>\"", 
+       ",", "10", ",", "Bold"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"nadirAngleDeg", ",", "10"}], "}"}], ",", 
+       RowBox[{"-", "90"}], ",", "90"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{
+      "\"\<Angle from nadir perpendicular to the direction of movement [\
+\[Degree]]\>\"", ",", "10", ",", "Bold"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"perpAngleDeg", ",", "0"}], "}"}], ",", 
+       RowBox[{"-", "90"}], ",", "90"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Style", "[", 
+      RowBox[{"\"\<Max detection range [km]\>\"", ",", "10", ",", "Bold"}], 
+      "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"viewRange", ",", "15000"}], "}"}], ",", "0.1", ",", 
+       "140000"}], "}"}]}], "\[IndentingNewLine]", "]"}], "\n", 
+   "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.943334463907585*^9, 3.94333460088811*^9}, {
+   3.943342951893536*^9, 3.943342953357161*^9}, {3.943343321808277*^9, 
+   3.943343349173273*^9}, {3.94334350660476*^9, 3.94334367529103*^9}, {
+   3.943343828262038*^9, 3.943343918958144*^9}, {3.943344003340274*^9, 
+   3.943344087857584*^9}, {3.943344133017146*^9, 3.943344171357758*^9}, {
+   3.943344209301295*^9, 3.943344234590027*^9}, {3.943344297706829*^9, 
+   3.943344385876736*^9}, {3.943344486421932*^9, 3.943344562514995*^9}, {
+   3.943344598796623*^9, 3.943344766111408*^9}, {3.943344797037963*^9, 
+   3.943344895952205*^9}, 3.943344950170945*^9, {3.943345070405453*^9, 
+   3.943345076036413*^9}, {3.943345121413012*^9, 3.943345212615071*^9}, {
+   3.943345249292286*^9, 3.943345290507027*^9}, {3.94334532099401*^9, 
+   3.943345341266405*^9}, {3.943345386149638*^9, 3.9433453877497797`*^9}, {
+   3.94334542090272*^9, 3.943345513872134*^9}, {3.943345590054654*^9, 
+   3.943345662170517*^9}, {3.943345697654825*^9, 3.943345735015654*^9}, {
+   3.943345769544201*^9, 3.943345780587162*^9}, {3.943345832052218*^9, 
+   3.943345841040131*^9}, {3.943345874763993*^9, 3.943346022838923*^9}, {
+   3.943346247661687*^9, 3.943346297468383*^9}, {3.9433463978683653`*^9, 
+   3.943346433916538*^9}, 3.943346478521345*^9, 3.943346511710365*^9, {
+   3.943346544748472*^9, 3.94334658069477*^9}, {3.9433466400590076`*^9, 
+   3.943346649899399*^9}, 3.943346681999976*^9, {3.943346768945797*^9, 
+   3.943346775364168*^9}, 3.943346870741851*^9, {3.943346921976355*^9, 
+   3.943346971846257*^9}, {3.943347002418158*^9, 3.943347003932834*^9}, {
+   3.943347107060129*^9, 3.943347238497998*^9}, {3.943347374641402*^9, 
+   3.943347449851227*^9}, {3.943347490259457*^9, 3.943347490622136*^9}, {
+   3.943347590009392*^9, 3.943347705461535*^9}, {3.9433481399867163`*^9, 
+   3.9433482319831953`*^9}, {3.943348285799218*^9, 3.9433483183877687`*^9}, {
+   3.94334839194206*^9, 3.9433483920996237`*^9}, 3.943348674571268*^9, {
+   3.943348727667377*^9, 3.94334879518358*^9}, {3.943348864801062*^9, 
+   3.943348887224675*^9}, {3.943348920474214*^9, 3.943348972230606*^9}, {
+   3.9433490375760098`*^9, 3.943349037911458*^9}, {3.9433490739805193`*^9, 
+   3.9433490744178457`*^9}, {3.943349151541329*^9, 3.943349215122287*^9}, {
+   3.943349260651818*^9, 3.943349290875884*^9}, 3.943349366520667*^9, {
+   3.943349843841068*^9, 3.9433498904395103`*^9}, {3.94334992133681*^9, 
+   3.943349945782461*^9}, {3.943350039867436*^9, 3.943350057657098*^9}, {
+   3.943351260272703*^9, 3.94335126637906*^9}, {3.943351320864178*^9, 
+   3.943351325700637*^9}, {3.943351375646356*^9, 3.943351399006969*^9}, 
+   3.943351503842798*^9, {3.94335159463663*^9, 3.943351753538217*^9}, {
+   3.943351793185649*^9, 3.94335191114497*^9}, {3.943351954879277*^9, 
+   3.943351978849288*^9}, {3.943352010983658*^9, 3.943352127708671*^9}, {
+   3.943352214773629*^9, 3.943352252109794*^9}, {3.943352354230772*^9, 
+   3.943352397715374*^9}, {3.943352658882367*^9, 3.943352677185624*^9}, {
+   3.943352839026554*^9, 3.943352844365261*^9}, {3.943352925239114*^9, 
+   3.943352934852231*^9}, {3.943352996637845*^9, 3.943353005421758*^9}, {
+   3.943353268146678*^9, 3.943353269478322*^9}, {3.943353391986924*^9, 
+   3.943353396642159*^9}, {3.946352464468929*^9, 3.946352475324481*^9}, {
+   3.946352505563768*^9, 3.946352556754582*^9}, {3.946352598973022*^9, 
+   3.946352621971801*^9}, {3.946352686693038*^9, 3.946352735200564*^9}, {
+   3.946352805887586*^9, 3.946352819432276*^9}, {3.946352929686949*^9, 
+   3.946352982762237*^9}, {3.9463530300819473`*^9, 3.946353155000193*^9}, 
+   3.946353201775731*^9, {3.946353237059247*^9, 3.946353342027253*^9}, {
+   3.946353398222621*^9, 3.94635342321378*^9}, {3.946353456071104*^9, 
+   3.946353554006229*^9}, 3.946353621836261*^9, {3.946353652246519*^9, 
+   3.946353656269869*^9}, {3.946353794564528*^9, 3.946353963306077*^9}, {
+   3.9463540253865833`*^9, 3.946354078884746*^9}, {3.946354129890893*^9, 
+   3.946354164855476*^9}, {3.946354195889484*^9, 3.946354297365045*^9}, {
+   3.946354354689885*^9, 3.946354362052391*^9}, {3.9463543921527233`*^9, 
+   3.946354473812488*^9}, {3.946354795148308*^9, 3.946354874272627*^9}, {
+   3.946354942121138*^9, 3.946355013430346*^9}, {3.946355076860922*^9, 
+   3.94635519890758*^9}, {3.946355245672293*^9, 3.946355344466095*^9}, {
+   3.946360506714114*^9, 3.946360514375642*^9}, {3.946360581112163*^9, 
+   3.946360588520372*^9}, {3.946360701257324*^9, 3.946360729385948*^9}, {
+   3.946360864465558*^9, 3.946360873372438*^9}, {3.946360930741063*^9, 
+   3.946360939292576*^9}, {3.946361138744748*^9, 3.946361167304502*^9}, {
+   3.9463612292852707`*^9, 3.946361266995964*^9}, {3.9463613258638473`*^9, 
+   3.946361356394621*^9}, {3.946361389220097*^9, 3.946361408969212*^9}, {
+   3.946361807634769*^9, 3.94636182421422*^9}, {3.94636187491887*^9, 
+   3.94636188050626*^9}, {3.946362003735938*^9, 3.9463620923788*^9}, {
+   3.9463621480045958`*^9, 3.9463621632928534`*^9}, 3.946362263282558*^9, {
+   3.94636230230624*^9, 3.946362306573195*^9}, {3.946362744564807*^9, 
+   3.946362751353913*^9}, {3.9463627937463007`*^9, 3.94636280633245*^9}, {
+   3.9463628495060663`*^9, 3.94636287933668*^9}, {3.946362981650017*^9, 
+   3.946362987226953*^9}, {3.9463631120835667`*^9, 3.946363183757933*^9}, {
+   3.946363274175672*^9, 3.94636329785364*^9}, {3.946363426428486*^9, 
+   3.94636349076331*^9}, {3.946363555792664*^9, 3.946363605646429*^9}, {
+   3.946364649720107*^9, 3.94636474427607*^9}, {3.946364799789755*^9, 
+   3.946364949169063*^9}, {3.9463649966592827`*^9, 3.946365008678375*^9}, {
+   3.946365063610608*^9, 3.9463651074317513`*^9}, {3.946365279038664*^9, 
+   3.946365281057222*^9}, {3.946365327435132*^9, 3.9463653563290358`*^9}, {
+   3.946365404915163*^9, 3.946365406192709*^9}, 3.946365503731789*^9, {
+   3.946365605703662*^9, 3.946365610047553*^9}, {3.94636565091893*^9, 
+   3.946365651719673*^9}, {3.946365715136994*^9, 3.946365718706548*^9}, {
+   3.946365795678458*^9, 3.9463658025328617`*^9}, {3.946365936374971*^9, 
+   3.946365961559473*^9}, 3.9463661003054743`*^9, {3.946366435399824*^9, 
+   3.946366487301674*^9}, {3.94636666502349*^9, 3.9463666653458023`*^9}, {
+   3.946369282672338*^9, 3.946369386407433*^9}, {3.946369455065506*^9, 
+   3.946369612737304*^9}, {3.9463715211440372`*^9, 3.946371547298604*^9}, {
+   3.946371782130319*^9, 3.946371784133537*^9}, {3.946375120861024*^9, 
+   3.9463751212073803`*^9}, {3.946375292964601*^9, 3.94637531584142*^9}, {
+   3.9463774493649693`*^9, 3.946377542585929*^9}, {3.946377576560551*^9, 
+   3.946377643825444*^9}, 3.946377698078719*^9, {3.94637787726931*^9, 
+   3.946377902672203*^9}, 3.9463793494906263`*^9, 3.946380624823312*^9, {
+   3.946380784809388*^9, 3.94638083257697*^9}, {3.946380872449334*^9, 
+   3.946380914766656*^9}, {3.946381001510417*^9, 3.946381005813002*^9}},
+ CellLabel->"In[21]:=",ExpressionUUID->"7b52f38a-a3ef-4d3d-a4f3-4b0c73ac95f8"],
+
+Cell[BoxData[
+ DynamicModuleBox[{$CellContext`alt$$ = -73.67631680036367, \
+$CellContext`currentDay$$ = 20, $CellContext`currentMonth$$ = 
+  1, $CellContext`currentYear$$ = 2025, $CellContext`currentHour$$ = 
+  12, $CellContext`currentMinute$$ = 0, $CellContext`difference$$ = 
+  Quantity[-58.87638888888889, "Days"], $CellContext`currentDate$$ = 
+  DateObject[{2025, 1, 20, 12, 0, 0}, "Instant", "Gregorian", 
+   1.], $CellContext`indexToDelete$$, $CellContext`altitudesVisible$$ = {}, \
+$CellContext`id$$ = "another", $CellContext`idDel$$ = 
+  "Gliwice", $CellContext`lat$$ = -50.2976, $CellContext`lon$$ = 18.67658}, 
+  TagBox[GridBox[{
+     {
+      StyleBox["\<\"Set correct date\"\>",
+       StripOnInput->False,
+       FontSize->12,
+       FontWeight->Bold]},
+     {
+      TemplateBox[{
+        TagBox[
+         GridBox[{{
+            StyleBox["\"Day\"", StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`currentDay$$], FieldSize -> {4, 1}]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+        TagBox[
+         GridBox[{{
+            StyleBox["\"Month\"", StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`currentMonth$$], FieldSize -> {4, 1}]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+        TagBox[
+         GridBox[{{
+            StyleBox["\"Year\"", StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`currentYear$$], FieldSize -> {4, 1}]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+        TagBox[
+         GridBox[{{
+            StyleBox["\"Hour\"", StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`currentHour$$], FieldSize -> {4, 1}]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+        TagBox[
+         GridBox[{{
+            StyleBox["\"Minute\"", StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`currentMinute$$], FieldSize -> {4, 1}]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+        DynamicBox[
+         ToBoxes[$CellContext`currentDate$$ = 
+           DateObject[{$CellContext`currentYear$$, \
+$CellContext`currentMonth$$, $CellContext`currentDay$$, \
+$CellContext`currentHour$$, $CellContext`currentMinute$$, 0}, 
+             "Instant"]; $CellContext`difference$$ = \
+$CellContext`currentDate$$ - $CellContext`equinoxDay; Style[""], 
+          StandardForm], ImageSizeCache -> {0., {0., 5.109375}}]},
+       "RowDefault"]},
+     {
+      StyleBox["\<\"Stations configuration\"\>",
+       StripOnInput->False,
+       FontSize->12,
+       FontWeight->Bold]},
+     {
+      TemplateBox[{
+        TagBox[
+         GridBox[{{
+            TemplateBox[{
+              TagBox[
+               GridBox[{{"\"ID\""}, {
+                  InputFieldBox[
+                   Dynamic[$CellContext`id$$], FieldSize -> {6, 1}]}}, 
+                DefaultBaseStyle -> "Column", 
+                GridBoxAlignment -> {"Columns" -> {{Left}}}, 
+                GridBoxItemSize -> {
+                 "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], 
+               "Column"], 
+              TagBox[
+               GridBox[{{"\"Latitude [\[Degree]]\""}, {
+                  InputFieldBox[
+                   Dynamic[$CellContext`lat$$], FieldSize -> {6, 1}]}}, 
+                DefaultBaseStyle -> "Column", 
+                GridBoxAlignment -> {"Columns" -> {{Left}}}, 
+                GridBoxItemSize -> {
+                 "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], 
+               "Column"], 
+              TagBox[
+               GridBox[{{
+                  StyleBox[
+                  "\"Longitude [\[Degree]]\"", StripOnInput -> False]}, {
+                  InputFieldBox[
+                   Dynamic[$CellContext`lon$$], FieldSize -> {6, 1}]}}, 
+                GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+                "Column", 
+                GridBoxItemSize -> {
+                 "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], 
+               "Column"]}, "RowDefault"]}, {
+            ButtonBox[
+             StyleBox[
+             "\"ADD\"", StripOnInput -> False, FontSize -> 10, FontWeight -> 
+              Bold], Appearance -> Automatic, 
+             ButtonFunction :> {$CellContext`alt$$ = \
+$CellContext`getAltitude[$CellContext`objectPosition, 
+                 $CellContext`latlonTocoordinates[$CellContext`lat$$, \
+$CellContext`lon$$, 
+                  Part[$CellContext`difference$$, 1]]], 
+               
+               AppendTo[$CellContext`stationsTable, {$CellContext`id$$, \
+$CellContext`lat$$, $CellContext`lon$$, $CellContext`alt$$, 
+                 If[$CellContext`alt$$ > 0, Green, Red]}]}, Evaluator -> 
+             Automatic, Method -> "Preemptive"]}}, DefaultBaseStyle -> 
+          "Column", GridBoxAlignment -> {"Columns" -> {{Left}}}, 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+        TagBox[
+         GridBox[{{
+            StyleBox["\"Remove station by ID\"", StripOnInput -> False]}, {
+            InputFieldBox[
+             Dynamic[$CellContext`idDel$$], FieldSize -> {6, 1}]}, {
+            ButtonBox[
+             StyleBox["\"DELETE\"", 10, Bold, StripOnInput -> False], 
+             ButtonFunction :> ($CellContext`stationsTable = 
+              DeleteCases[$CellContext`stationsTable, {$CellContext`idDel$$, 
+                 Blank[], 
+                 Blank[], 
+                 Blank[], 
+                 Blank[]}]), Appearance -> Automatic, Evaluator -> Automatic, 
+             Method -> "Preemptive"]}}, 
+          GridBoxAlignment -> {"Columns" -> {{Left}}}, DefaultBaseStyle -> 
+          "Column", 
+          GridBoxItemSize -> {
+           "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"]},
+       "RowDefault"]},
+     {
+      StyleBox["\<\"List of stations\"\>",
+       StripOnInput->False,
+       FontSize->12,
+       FontWeight->Bold]},
+     {
+      DynamicBox[ToBoxes[
+        TableForm[$CellContext`stationsTable, 
+         TableHeadings -> {
+          None, {"ID", "Latitude [\[Degree]]", "Longitude [\[Degree]]", 
+            "Sat altitude [\[Degree]]", "Visibility"}}], StandardForm],
+       ImageSizeCache->{
+        452.3521875, {19.331484375000002`, 23.960390625000002`}}]},
+     {
+      DynamicBox[ToBoxes[$CellContext`stationsCoordinates = Table[
+           $CellContext`latlonTocoordinates[
+            Part[$CellContext`stationsTable, $CellContext`i, 2], 
+            Part[$CellContext`stationsTable, $CellContext`i, 3], 
+            Part[$CellContext`difference$$, 1]], {$CellContext`i, 
+            Length[$CellContext`stationsTable]}]; Style[""], StandardForm],
+       ImageSizeCache->{0., {0., 5.109375}}]},
+     {
+      ButtonBox[
+       StyleBox["\<\"REFRESH TABLE\"\>",
+        StripOnInput->False,
+        FontSize->10,
+        FontWeight->Bold],
+       Appearance->Automatic,
+       ButtonFunction:>($CellContext`stationsTable = Table[{
+           Part[$CellContext`stationsTable, $CellContext`i, 1], 
+           Part[$CellContext`stationsTable, $CellContext`i, 2], 
+           Part[$CellContext`stationsTable, $CellContext`i, 3], 
+           $CellContext`getAltitude[$CellContext`objectPosition, 
+            $CellContext`latlonTocoordinates[
+             Part[$CellContext`stationsTable, $CellContext`i, 2], 
+             Part[$CellContext`stationsTable, $CellContext`i, 3], 
+             Part[$CellContext`difference$$, 1]]], 
+           If[$CellContext`getAltitude[$CellContext`objectPosition, 
+              $CellContext`latlonTocoordinates[
+               Part[$CellContext`stationsTable, $CellContext`i, 2], 
+               Part[$CellContext`stationsTable, $CellContext`i, 3], 
+               Part[$CellContext`difference$$, 1]]] > 0, Green, 
+            Red]}, {$CellContext`i, 
+           Length[$CellContext`stationsTable]}]),
+       Evaluator->Automatic,
+       Method->"Preemptive"]}
+    },
+    DefaultBaseStyle->"Column",
+    GridBoxAlignment->{"Columns" -> {{Left}}},
+    GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+   "Column"],
+  DynamicModuleValues:>{}]], "Output",
+ CellChangeTimes->{
+  3.9463805343699408`*^9, {3.946380927720562*^9, 3.946380932422166*^9}, {
+   3.946381006613007*^9, 3.946381011882226*^9}, 3.946705892349619*^9, 
+   3.946706059608014*^9, 3.946706102856175*^9, 3.946706310232264*^9, 
+   3.946958659695273*^9, {3.947408370132962*^9, 3.947408384381898*^9}, 
+   3.947408426000512*^9},
+ CellLabel->"Out[21]=",ExpressionUUID->"33dcf80e-6272-4f66-93b9-c1208462f20c"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`argumentPeriapsis$$ = -0.8419468311620646, \
+$CellContext`eccentricity$$ = 0.606, $CellContext`inclinationAngle$$ = 
+    1.5079644737231008`, $CellContext`longitudeAscendingNode$$ = 
+    0.7414158662471912, $CellContext`nadirAngleDeg$$ = -14.5, \
+$CellContext`perpAngleDeg$$ = 0, $CellContext`semiMajorAxis$$ = 
+    19400., $CellContext`trueAnomaly$$ = 
+    2.3876104167282426`, $CellContext`viewAngleDeg$$ = 
+    10, $CellContext`viewRange$$ = 25800., Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[
+       Style["\t\tOrbit elements", 12, Bold]], 
+      Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {
+      Hold[
+       Style["Orbital eccentricity [-]", 10, Bold]], 
+      Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+       Hold[$CellContext`eccentricity$$], 0}, 0, 0.999, ControlType -> 
+      Manipulator}, {
+      Hold[
+       Style["Semi-major axis [km]", 10, Bold]], 
+      Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+       Hold[$CellContext`semiMajorAxis$$], 20000}, 6371, 70000, ControlType -> 
+      Manipulator}, {
+      Hold[
+       Style["Inclination [rad]", 10, Bold]], 
+      Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+       Hold[$CellContext`inclinationAngle$$], 0}, -Pi, Pi, ControlType -> 
+      Manipulator}, {
+      Hold[
+       Style["Longitude of ascending node [rad]", 10, Bold]], 
+      Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+       Hold[$CellContext`longitudeAscendingNode$$], 0}, -Pi, Pi, ControlType -> 
+      Manipulator}, {
+      Hold[
+       Style["Argument of periapsis [rad]", 10, Bold]], 
+      Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+       Hold[$CellContext`argumentPeriapsis$$], 0}, -Pi, Pi, ControlType -> 
+      Manipulator}, {
+      Hold[
+       Style["True anomaly (current position) [rad]", 10, Bold]], 
+      Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+       Hold[$CellContext`trueAnomaly$$], 0}, -Pi, Pi, ControlType -> 
+      Manipulator}, {
+      Hold[
+       Style["\t\tSatellite detector", 12, Bold]], 
+      Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {
+      Hold[
+       Style["Angle of view [\[Degree]]", 10, Bold]], 
+      Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+       Hold[$CellContext`viewAngleDeg$$], 10}, 0.01, 179.999, ControlType -> 
+      Manipulator}, {
+      Hold[
+       Style[
+       "Angle from nadir in the direction of movement [\[Degree]]", 10, 
+        Bold]], Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+       Hold[$CellContext`nadirAngleDeg$$], 10}, -90, 90, ControlType -> 
+      Manipulator}, {
+      Hold[
+       Style[
+       "Angle from nadir perpendicular to the direction of movement \
+[\[Degree]]", 10, Bold]], Manipulate`Dump`ThisIsNotAControl, ControlType -> 
+      None}, {{
+       Hold[$CellContext`perpAngleDeg$$], 0}, -90, 90, ControlType -> 
+      Manipulator}, {
+      Hold[
+       Style["Max detection range [km]", 10, Bold]], 
+      Manipulate`Dump`ThisIsNotAControl, ControlType -> None}, {{
+       Hold[$CellContext`viewRange$$], 15000}, 0.1, 140000, ControlType -> 
+      Manipulator}}, Typeset`size$$ = {460.8, {246., 250.32563194771393`}}, 
+    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = True}, 
+    
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`argumentPeriapsis$$ = 
+        0, $CellContext`eccentricity$$ = 0, $CellContext`inclinationAngle$$ = 
+        0, $CellContext`longitudeAscendingNode$$ = 
+        0, $CellContext`nadirAngleDeg$$ = 10, $CellContext`perpAngleDeg$$ = 
+        0, $CellContext`semiMajorAxis$$ = 20000, $CellContext`trueAnomaly$$ = 
+        0, $CellContext`viewAngleDeg$$ = 10, $CellContext`viewRange$$ = 
+        15000}, "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> (($CellContext`stationsDisplay = 
+         Graphics3D[{PointSize -> Large, Green, 
+            Point[$CellContext`stationsCoordinates], Black, 
+            Table[
+             Text[
+              Part[$CellContext`stationsTable, $CellContext`i, 1], 
+              
+              Part[$CellContext`stationsCoordinates, $CellContext`i]], \
+{$CellContext`i, 
+              
+              Length[$CellContext`stationsTable]}]}]; $CellContext`plotRange = \
+$CellContext`semiMajorAxis$$ (
+           1 + $CellContext`eccentricity$$); $CellContext`semiMinorAxis = 
+         Sqrt[$CellContext`semiMajorAxis$$^2 (
+            1 - $CellContext`eccentricity$$^2)]; $CellContext`rotationZ[
+           Pattern[$CellContext`angle, 
+            Blank[]]] := {{
+            Cos[$CellContext`angle], -Sin[$CellContext`angle], 0}, {
+            Sin[$CellContext`angle], 
+            Cos[$CellContext`angle], 0}, {0, 0, 1}}; $CellContext`rotationX[
+           Pattern[$CellContext`angle, 
+            Blank[]]] := {{1, 0, 0}, {0, 
+            Cos[$CellContext`angle], -Sin[$CellContext`angle]}, {0, 
+            Sin[$CellContext`angle], 
+            Cos[$CellContext`angle]}}; $CellContext`rotationY[
+           Pattern[$CellContext`angle, 
+            Blank[]]] := {{
+            Cos[$CellContext`angle], 0, 
+            Sin[$CellContext`angle]}, {0, 1, 0}, {-Sin[$CellContext`angle], 0, 
+            Cos[$CellContext`angle]}}; $CellContext`rotationOrbit = Dot[
+           $CellContext`rotationZ[$CellContext`longitudeAscendingNode$$], 
+           $CellContext`rotationX[$CellContext`inclinationAngle$$], 
+           $CellContext`rotationZ[$CellContext`argumentPeriapsis$$]]; \
+$CellContext`orbitEquation[
+           Pattern[$CellContext`t$, 
+            Blank[]]] := {$CellContext`semiMajorAxis$$ (
+            Cos[$CellContext`t$] - $CellContext`eccentricity$$), \
+$CellContext`semiMinorAxis Sin[$CellContext`t$], 0}; $CellContext`rotatedOrbit[
+           Pattern[$CellContext`t, 
+            Blank[]]] := Dot[$CellContext`rotationOrbit, 
+           $CellContext`orbitEquation[$CellContext`t]]; \
+$CellContext`objectPosition = Dot[$CellContext`rotationOrbit, 
+           $CellContext`orbitEquation[$CellContext`trueAnomaly$$]]; \
+$CellContext`Earth = Graphics3D[{Blue, 
+            
+            Sphere[{0, 0, 
+             0}, $CellContext`EarthRadius]}]; $CellContext`earthAxes = 
+         Graphics3D[{Thin, Green, 
+            
+            Line[{{-$CellContext`plotRange, 0, 0}, {$CellContext`plotRange, 0,
+                0}}], Red, 
+            
+            Line[{{0, -$CellContext`plotRange, 0}, {
+              0, $CellContext`plotRange, 0}}], Purple, 
+            
+            Line[{{0, 0, -$CellContext`plotRange}, {
+              0, 0, $CellContext`plotRange}}]}]; $CellContext`orbitPath = 
+         ParametricPlot3D[
+           $CellContext`rotatedOrbit[$CellContext`t], {$CellContext`t, (-2) 
+            Pi, 2 Pi}, PlotStyle -> {Dashed, Black}, Boxed -> False, Axes -> 
+           False]; $CellContext`object = Graphics3D[{Red, 
+            PointSize[Large], 
+            Point[$CellContext`objectPosition], Black, 
+            Text[
+             Style[
+             "Satellite", 12, Bold], $CellContext`objectPosition + {
+              0, 0.3 $CellContext`plotRange, 
+               0}]}]; $CellContext`viewAngle = $CellContext`viewAngleDeg$$ 
+          Degree; $CellContext`nadirAngle = $CellContext`nadirAngleDeg$$ 
+          Degree; $CellContext`perpAngle = $CellContext`perpAngleDeg$$ 
+          Degree; $CellContext`coneRadius = 
+         Sin[$CellContext`viewAngle/
+            2] $CellContext`viewRange$$; $CellContext`coneRotation = Dot[
+           $CellContext`rotationZ[$CellContext`longitudeAscendingNode$$], 
+           $CellContext`rotationX[$CellContext`inclinationAngle$$], 
+           $CellContext`rotationZ[$CellContext`trueAnomaly$$ - \
+$CellContext`nadirAngle], 
+           $CellContext`rotationZ[$CellContext`argumentPeriapsis$$], 
+           $CellContext`rotationY[$CellContext`perpAngle]]; \
+$CellContext`viewCone = Graphics3D[{Yellow, 
+            Opacity[0.5], 
+            Cone[{
+             Dot[$CellContext`coneRotation, {-$CellContext`viewRange$$, 0, 
+                 0}] + $CellContext`objectPosition, \
+$CellContext`objectPosition}, $CellContext`coneRadius]}]; 
+        Null); $CellContext`ascendingNodeDirection = Dot[
+          $CellContext`rotationZ[$CellContext`longitudeAscendingNode$$], \
+{$CellContext`plotRange, 0, 0}]; $CellContext`nodeLine = 
+        Graphics3D[{Blue, Dashed, 
+           Line[{{0, 0, 0}, $CellContext`ascendingNodeDirection 1.5}]}]; 
+       GraphicsColumn[{
+          
+          Show[$CellContext`Earth, $CellContext`earthAxes, \
+$CellContext`orbitPath, $CellContext`nodeLine, $CellContext`object, \
+$CellContext`viewCone, $CellContext`stationsDisplay, ImageSize -> Medium, 
+           Axes -> True, 
+           PlotRange -> {{-$CellContext`plotRange, $CellContext`plotRange}, \
+{-$CellContext`plotRange, $CellContext`plotRange}, {-$CellContext`plotRange, \
+$CellContext`plotRange}}, PlotLabel -> "3D view"]}, ImageSize -> Large]), 
+      "Specifications" :> {
+        Style["\t\tOrbit elements", 12, Bold], 
+        Style[
+        "Orbital eccentricity [-]", 10, 
+         Bold], {{$CellContext`eccentricity$$, 0}, 0, 0.999}, 
+        Style[
+        "Semi-major axis [km]", 10, 
+         Bold], {{$CellContext`semiMajorAxis$$, 20000}, 6371, 70000}, 
+        Style[
+        "Inclination [rad]", 10, 
+         Bold], {{$CellContext`inclinationAngle$$, 0}, -Pi, Pi}, 
+        Style[
+        "Longitude of ascending node [rad]", 10, 
+         Bold], {{$CellContext`longitudeAscendingNode$$, 0}, -Pi, Pi}, 
+        Style[
+        "Argument of periapsis [rad]", 10, 
+         Bold], {{$CellContext`argumentPeriapsis$$, 0}, -Pi, Pi}, 
+        Style[
+        "True anomaly (current position) [rad]", 10, 
+         Bold], {{$CellContext`trueAnomaly$$, 0}, -Pi, Pi}, 
+        Style["\t\tSatellite detector", 12, Bold], 
+        Style[
+        "Angle of view [\[Degree]]", 10, 
+         Bold], {{$CellContext`viewAngleDeg$$, 10}, 0.01, 179.999}, 
+        Style[
+        "Angle from nadir in the direction of movement [\[Degree]]", 10, 
+         Bold], {{$CellContext`nadirAngleDeg$$, 10}, -90, 90}, 
+        Style[
+        "Angle from nadir perpendicular to the direction of movement [\
+\[Degree]]", 10, Bold], {{$CellContext`perpAngleDeg$$, 0}, -90, 90}, 
+        Style[
+        "Max detection range [km]", 10, 
+         Bold], {{$CellContext`viewRange$$, 15000}, 0.1, 140000}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{798., {271.185546875, 275.814453125}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{
+  3.9463805343699408`*^9, {3.946380927720562*^9, 3.946380932422166*^9}, {
+   3.946381006613007*^9, 3.946381011882226*^9}, 3.946705892349619*^9, 
+   3.946706059608014*^9, 3.946706102856175*^9, 3.946706310232264*^9, 
+   3.946958659695273*^9, {3.947408370132962*^9, 3.947408384381898*^9}, 
+   3.947408426085167*^9, {3.9474089835754642`*^9, 3.947409001757045*^9}},
+ CellLabel->"Out[22]=",ExpressionUUID->"7406a952-39b9-4149-a030-c7af0ced3ae1"]
+}, Open  ]],
+
+Cell[BoxData["|"], "Input",
+ CellChangeTimes->{
+  3.946377698749376*^9},ExpressionUUID->"fc730e01-88a3-4d97-aab1-\
+33fd90d485d9"]
+},
+WindowSize->{1147.5, 627},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification:>0.8 Inherited,
+FrontEndVersion->"14.0 for Linux x86 (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"97808d7f-a7a9-46f1-87a2-271dc36dffad"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 20469, 448, 1927, "Input",ExpressionUUID->"ed40080a-6449-49ad-9d84-15297d2f42bd"],
+Cell[CellGroupData[{
+Cell[21052, 472, 23389, 496, 1670, "Input",ExpressionUUID->"7b52f38a-a3ef-4d3d-a4f3-4b0c73ac95f8"],
+Cell[44444, 970, 9359, 205, 247, "Output",ExpressionUUID->"33dcf80e-6272-4f66-93b9-c1208462f20c"],
+Cell[53806, 1177, 11825, 239, 562, "Output",ExpressionUUID->"7406a952-39b9-4149-a030-c7af0ced3ae1"]
+}, Open  ]],
+Cell[65646, 1419, 129, 3, 23, "Input",ExpressionUUID->"fc730e01-88a3-4d97-aab1-33fd90d485d9"]
+}
+]
+*)
+
